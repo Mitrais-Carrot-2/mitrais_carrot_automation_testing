@@ -2,8 +2,10 @@ import org.junit.runner.JUnitCore;
 import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import page.Globals;
+import page.ManagerPage;
 import test.AddItem;
 import test.Login;
+import test.Manager;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -21,7 +23,8 @@ public class App {
       //Run the test
       JUnitCore junit = new JUnitCore();
       result= junit.run(
-                Login.class
+//              Login.class,
+              Manager.class
                 // AddItem.class
           );
     }
