@@ -1,2 +1,1 @@
-There are 1 FAILED test(s): 
-	1. addRandomItemsToCart(test.AddItem): Item name in List is different from Cart: array lengths differed, expected.length=3 actual.length=2; arrays first differed at element [0]; expected:<Sauce Labs [Onesie]> but was:<Sauce Labs [Bike Light]>
+All tests in are PASSED

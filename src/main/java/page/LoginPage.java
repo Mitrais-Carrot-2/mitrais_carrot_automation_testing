@@ -1,5 +1,7 @@
 package page;
 
+
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -9,10 +11,10 @@ public class LoginPage {
     WebDriver driver;
 
     //Define locators in Login Page
-    By username_loc=By.id("user-name");
-    By password_loc=By.id("password");
-    By loginButton_loc=By.name("login-button");
-    By errorMsg_loc=By.xpath("//div[@class='error-message-container error']");
+    By username_loc=By.xpath("//input[@placeholder='Username']");
+    By password_loc=By.xpath("//input[@placeholder='Password']");
+    By loginButton_loc=By.id("login-button");
+    By errorMsg_loc=By.xpath("//div[@class='bg-red-500 text-center text-white my-3 rounded animate-pulse']");
 
 
     public LoginPage(WebDriver driver){
@@ -21,7 +23,7 @@ public class LoginPage {
 
     //Login method, adding webdriver as parameter so that other classes can reuse the method
     public void login(String username, String password){
-        driver.get("https://www.saucedemo.com/");
+        driver.get("http://localhost:3000/sign-in");
 
         //Get Username and password input field
         WebElement username_elm=this.driver.findElement(this.username_loc);
@@ -32,10 +34,13 @@ public class LoginPage {
         password_elm.sendKeys(password);
 
         //Find the login button
-        WebElement loginButton=this.driver.findElement(this.loginButton_loc);
+        WebElement loginButton=this.driver.findElement(By.id("login-button"));
+
 
         //Click the login button
         loginButton.click();
+
+        
     }
 
     // Method to check if the Login error message matches the Expected Error Message

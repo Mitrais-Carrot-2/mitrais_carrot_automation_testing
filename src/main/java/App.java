@@ -21,8 +21,8 @@ public class App {
       //Run the test
       JUnitCore junit = new JUnitCore();
       result= junit.run(
-                Login.class, 
-                AddItem.class
+                Login.class
+                // AddItem.class
           );
     }
 

@@ -1,11 +1,17 @@
 package test;
 
+import java.time.Duration;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
 import page.HomePage;
 import page.LoginPage;
 
@@ -21,6 +27,8 @@ public class Login {
         driver = new ChromeDriver();
         loginPage=new LoginPage(driver);
         homePage=new HomePage(driver);
+        
+        
     }
 
     //BEfore each test
@@ -28,6 +36,8 @@ public class Login {
     // public void beforeLogin(){
     //     //do something
     // }
+
+    
 
 
     // There are positive test and negative test suites in this code:
@@ -37,34 +47,22 @@ public class Login {
     @Test
     public void standard_login(){
         //Login with valid credentials
-        loginPage.login ("standard_user","secret_sauce");
+        loginPage.login ("Naufal","string");
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
+        wait.until(driver -> driver.findElement(By.xpath("//h2[normalize-space()='DASHBOARD']")));
         //Assert if user can see Home page
         homePage.assertInHomePage();
     }
 
-    @Test
-    public void performance_glitch_login(){
-        //Login with account and experience glitch
-        loginPage.login ("performance_glitch_user","secret_sauce");
-        //Assert if user can see Home page  
-        homePage.assertInHomePage();
-    }
-
-    @Test
-    public void locked_out_user_login(){
-        //Login with credentials that is locked out
-        loginPage.login ("locked_out_user","secret_sauce");
-        //Assert if error message correct
-        String expectedErrorMsg="Epic sadface: Sorry, this user has been locked out.";
-        loginPage.assertErrorMessage(expectedErrorMsg);
-    }
 
     @Test
     public void no_username_login(){
         //Login with empty username
         loginPage.login ("","secret_sauce");
         //Assert if error message correct
-        String expectedErrorMsg="Epic sadface: Username is required";
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='bg-red-500 text-center text-white my-3 rounded animate-pulse']")) );
+        String expectedErrorMsg="Username is required";
         loginPage.assertErrorMessage(expectedErrorMsg);
     }
 
@@ -73,7 +71,9 @@ public class Login {
         //Login with empty password
         loginPage.login ("locked_out_user","");
         //Assert if error message correct
-        String expectedErrorMsg="Epic sadface: Password is required";
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='bg-red-500 text-center text-white my-3 rounded animate-pulse']")) );
+        String expectedErrorMsg="Password is required";
         loginPage.assertErrorMessage(expectedErrorMsg);
     }
 
@@ -82,7 +82,9 @@ public class Login {
         //Login with unregistered credentials
         loginPage.login ("username","password");
         //Assert if error message correct
-        String expectedErrorMsg="Epic sadface: Username and password do not match any user in this service";
+        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='bg-red-500 text-center text-white my-3 rounded animate-pulse']")) );
+        String expectedErrorMsg="Username / Password is incorrect";
         loginPage.assertErrorMessage(expectedErrorMsg);
     }
 
