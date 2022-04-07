@@ -1,1 +1,4 @@
-All tests in are PASSED
+There are 1 FAILED test(s): 
+	1. initializationError(test.ManagerPageTest): Invalid test class 'test.ManagerPageTest':
+  1. Method setUp() should be static
+  2. No runnable methods

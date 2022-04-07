@@ -36,11 +36,8 @@ public class LoginPage {
         //Find the login button
         WebElement loginButton=this.driver.findElement(By.id("login-button"));
 
-
         //Click the login button
         loginButton.click();
-
-        
     }
 
     // Method to check if the Login error message matches the Expected Error Message
