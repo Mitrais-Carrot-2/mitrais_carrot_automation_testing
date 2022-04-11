@@ -6,7 +6,6 @@ import java.time.Duration;
 import java.util.HashMap;
 
 import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -40,19 +39,32 @@ public class Farmer {
         
     }
 
-    // @Test
-    // public void assertInFarmerPage(){
-    //     farmerPage.assertInFarmerPage();
-    // }
+    @Test
+    public void assertInFarmerPage(){
+        farmerPage.assertInFarmerPage();
+    }
 
     @Test
     public void showManageBarn(){
         HashMap<String, String> barnInfo = farmerPage.getBarnInfo(1);
         farmerPage.clickManageButton(1);
-        // TODO : Compare the information in the model with the information in the HashMap
         driver.findElement(By.id("barn-info"));
         HashMap<String, String> barnManageInfo = farmerPage.getBarnInfoByManageButton();
         assertEquals(barnInfo, barnManageInfo);
+    }
+
+    @Test
+    public void createNewBarn() throws InterruptedException{
+        HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastTableIndex());
+        String lastBarnName = lastBarnInfo.get("Name");
+        String[] lastBarnNameSplited = lastBarnName.split(" ", 2);
+        int barnNumber = Integer.parseUnsignedInt(lastBarnNameSplited[1])+1;
+        String newBarnName = lastBarnNameSplited[0]+ " " + barnNumber;
+
+        farmerPage.clickCreateBarnButton();
+        driver.findElement(By.xpath("//*[text()='Create Barn']"));
+        farmerPage.fillCreateBarnForm(newBarnName, String.valueOf(barnNumber), String.valueOf(barnNumber+1), "1000");
+
     }
 
     @After
