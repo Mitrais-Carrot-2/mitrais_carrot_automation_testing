@@ -7,6 +7,7 @@ import java.util.HashMap;
 
 import org.junit.After;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -53,7 +54,7 @@ public class Farmer {
         assertEquals(barnInfo, barnManageInfo);
     }
 
-    @Test
+    @Ignore
     public void createNewBarn() throws InterruptedException{
         HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastTableIndex());
         String lastBarnName = lastBarnInfo.get("Name");
@@ -64,7 +65,18 @@ public class Farmer {
         farmerPage.clickCreateBarnButton();
         driver.findElement(By.xpath("//*[text()='Create Barn']"));
         farmerPage.fillCreateBarnForm(newBarnName, String.valueOf(barnNumber), String.valueOf(barnNumber+1), "1000");
+    }
 
+    @Test
+    public void createNewBarnWithSameName() throws InterruptedException{
+        HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastTableIndex());
+        String lastBarnName = lastBarnInfo.get("Name");
+        String[] lastBarnNameSplited = lastBarnName.split(" ", 2);
+        int barnNumber = Integer.parseUnsignedInt(lastBarnNameSplited[1]);
+
+        farmerPage.clickCreateBarnButton();
+        driver.findElement(By.xpath("//*[text()='Create Barn']"));
+        farmerPage.fillCreateBarnFormSame(lastBarnName, String.valueOf(barnNumber), String.valueOf(barnNumber+1), "1000");
     }
 
     @After

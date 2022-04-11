@@ -173,4 +173,15 @@ public class FarmerPage {
         driver.switchTo().alert().accept();
     }
 
+    public void fillCreateBarnFormSame(String barnName, String year, String yearPlusOne,  String carrotAmount) throws InterruptedException {
+        this.driver.findElement(By.name("barnName")).sendKeys(barnName);
+        this.driver.findElement(By.name("startPeriode")).sendKeys("\t\t"+year);
+        this.driver.findElement(By.name("endPeriode")).sendKeys("\t\t"+yearPlusOne);
+        this.driver.findElement(By.name("carrotAmount")).sendKeys(carrotAmount);
+        this.driver.findElement(By.xpath("//button[@type='button'][normalize-space()='Create Barn']")).click();
+        waitForAlert();
+        assertEquals(driver.switchTo().alert().getText(), "Barn creation failed");
+        driver.switchTo().alert().accept();
+    }
+
 }
