@@ -1,7 +1,9 @@
 package test;
 
 import java.time.Duration;
+import java.util.HashMap;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -21,31 +23,40 @@ public class Farmer {
     private static FarmerPage farmerPage;
 
     @BeforeClass
-    public static void setup(){
+    public static void loginToFarmerPage(){
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         dashboardPage = new DashboardPage(driver);
         farmerPage = new FarmerPage(driver);
-        
-    }
 
-    @Before
-    public void loginToFarmer(){
         loginPage.login("Naufal","string"); //Change to username and password for farmer
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("to-farmer-dashboard")));
         dashboardPage.goToFarmerPage();
         WebDriverWait waitReloadToFarmerDashboard = new WebDriverWait(driver,Duration.ofSeconds(3));
         waitReloadToFarmerDashboard.until(driver -> driver.findElement(By.id("farmer-dashboard")));
+        
     }
 
     @Test
     public void assertInFarmerPage(){
-        WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
-        wait.until(driver -> driver.findElement(By.id("farmer-dashboard")));
         farmerPage.assertInFarmerPage();
     }
 
+    @Test
+    public void showManageBarn(){
+        HashMap<String, String> barnInfo = farmerPage.getBarnInfo(1);
+        farmerPage.clickManageButton(1);
+        // TODO : Compare the information in the model with the information in the HashMap
+        driver.findElement(By.id("barn-info"));
+    }
+
+    @After
+    public void backToFarmerDashboard(){
+        driver.get("http://localhost:3000/farmer");
+        WebDriverWait waitReloadToFarmerDashboard = new WebDriverWait(driver,Duration.ofSeconds(3));
+        waitReloadToFarmerDashboard.until(driver -> driver.findElement(By.id("farmer-dashboard")));
+    }
 
 
 

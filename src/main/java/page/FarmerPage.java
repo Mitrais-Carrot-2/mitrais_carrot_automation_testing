@@ -1,5 +1,7 @@
 package page;
 
+import java.util.HashMap;
+
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -85,6 +87,17 @@ public class FarmerPage {
     }
     public String getBarnStatus(int index){
         return this.driver.findElement(barnStatus_loc(index)).getText();
+    }
+
+    public HashMap<String,String> getBarnInfo(int index){
+        HashMap<String,String> barnInfo=new HashMap<String,String>();
+        barnInfo.put("Name",this.getBarnName(index));
+        barnInfo.put("Start Periode",this.getBarnStartPeriode(index));
+        barnInfo.put("End Periode",this.getBarnEndPeriode(index));
+        barnInfo.put("Carrot Amount",this.getBarnCarrotAmount(index));
+        barnInfo.put("Distributed Carrot",this.getBarnDistributedCarrot(index));
+        barnInfo.put("Status",this.getBarnStatus(index));
+        return barnInfo;
     }
 
     public void clickCreateBarnButton(){
