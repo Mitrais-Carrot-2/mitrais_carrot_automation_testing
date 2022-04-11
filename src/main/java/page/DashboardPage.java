@@ -17,6 +17,6 @@ public class DashboardPage {
     }
 
     public void goToFarmerPage(){
-        this.driver.findElement(By.xpath("//button[@id='to-farmer-dashboard']")).click();
+        this.driver.findElement(By.xpath("//button[@id='btn-farmer']")).click();
     }
 }
