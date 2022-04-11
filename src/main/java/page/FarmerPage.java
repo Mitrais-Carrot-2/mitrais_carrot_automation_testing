@@ -5,6 +5,7 @@ import java.util.HashMap;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 
 public class FarmerPage {
     WebDriver driver;
@@ -95,8 +96,17 @@ public class FarmerPage {
         barnInfo.put("Start Periode",this.getBarnStartPeriode(index));
         barnInfo.put("End Periode",this.getBarnEndPeriode(index));
         barnInfo.put("Carrot Amount",this.getBarnCarrotAmount(index));
-        barnInfo.put("Distributed Carrot",this.getBarnDistributedCarrot(index));
-        barnInfo.put("Status",this.getBarnStatus(index));
+        // barnInfo.put("Distributed Carrot",this.getBarnDistributedCarrot(index));
+        // barnInfo.put("Status",this.getBarnStatus(index));
+        return barnInfo;
+    }
+
+    public HashMap<String,String> getBarnInfoByManageButton(){
+        HashMap<String,String> barnInfo=new HashMap<String,String>();
+        barnInfo.put("Name",(this.driver.findElement(By.name("barnName")).getAttribute("value")));
+        barnInfo.put("Start Periode",(this.driver.findElement(By.name("startPeriode")).getAttribute("value")));
+        barnInfo.put("End Periode",(this.driver.findElement(By.name("endPeriode")).getAttribute("value")));
+        barnInfo.put("Carrot Amount",(this.driver.findElement(By.name("carrotAmount")).getAttribute("value")));
         return barnInfo;
     }
 

@@ -1,5 +1,7 @@
 package test;
 
+import static org.junit.Assert.assertEquals;
+
 import java.time.Duration;
 import java.util.HashMap;
 
@@ -31,17 +33,17 @@ public class Farmer {
 
         loginPage.login("Naufal","string"); //Change to username and password for farmer
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
-        wait.until(driver -> driver.findElement(By.id("to-farmer-dashboard")));
+        wait.until(driver -> driver.findElement(By.id("btn-farmer")));
         dashboardPage.goToFarmerPage();
         WebDriverWait waitReloadToFarmerDashboard = new WebDriverWait(driver,Duration.ofSeconds(3));
         waitReloadToFarmerDashboard.until(driver -> driver.findElement(By.id("farmer-dashboard")));
         
     }
 
-    @Test
-    public void assertInFarmerPage(){
-        farmerPage.assertInFarmerPage();
-    }
+    // @Test
+    // public void assertInFarmerPage(){
+    //     farmerPage.assertInFarmerPage();
+    // }
 
     @Test
     public void showManageBarn(){
@@ -49,6 +51,8 @@ public class Farmer {
         farmerPage.clickManageButton(1);
         // TODO : Compare the information in the model with the information in the HashMap
         driver.findElement(By.id("barn-info"));
+        HashMap<String, String> barnManageInfo = farmerPage.getBarnInfoByManageButton();
+        assertEquals(barnInfo, barnManageInfo);
     }
 
     @After
