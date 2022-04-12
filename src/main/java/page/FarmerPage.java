@@ -1,5 +1,8 @@
 package page;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.Assert;
@@ -11,6 +14,7 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
 
 public class FarmerPage {
     WebDriver driver;
@@ -124,6 +128,17 @@ public class FarmerPage {
         return barnInfo;
     }
 
+    public HashMap<String, String> getBarnInfoWithStatus(int index) {
+        HashMap<String, String> barnInfo = new HashMap<String, String>();
+        barnInfo.put("Name", this.getBarnName(index));
+        barnInfo.put("Start Periode", this.getBarnStartPeriode(index));
+        barnInfo.put("End Periode", this.getBarnEndPeriode(index));
+        barnInfo.put("Carrot Amount", this.getBarnCarrotAmount(index));
+        // barnInfo.put("Distributed Carrot",this.getBarnDistributedCarrot(index));
+        barnInfo.put("Status",this.getBarnStatus(index));
+        return barnInfo;
+    }
+
     public HashMap<String, String> getBarnInfoByManageButton() {
         HashMap<String, String> barnInfo = new HashMap<String, String>();
         barnInfo.put("Name", (this.driver.findElement(By.name("barnName")).getAttribute("value")));
@@ -184,4 +199,122 @@ public class FarmerPage {
         driver.switchTo().alert().accept();
     }
 
+    public void changeDateOnly(String startDate, String endDate) throws InterruptedException {
+        String[] startDateSplit = startDate.split("-");
+        this.driver.findElement(By.name("startPeriode")).sendKeys(startDateSplit[0]+startDateSplit[1]+"\t"+startDateSplit[2]);
+        String[] endDateSplit = endDate.split("-");
+        this.driver.findElement(By.name("endPeriode")).sendKeys(endDateSplit[0]+endDateSplit[1]+"\t"+endDateSplit[2]);
+        this.driver.findElement(By.xpath("//button[normalize-space()='Save']")).click();
+        waitForAlert();
+        assertEquals(driver.switchTo().alert().getText(), "Barn updated");
+        driver.switchTo().alert().accept();
+        Thread.sleep(1000);
+        this.driver.findElement(By.cssSelector(".text-red-600")).click();
+    }
+
+    public void fillEditBarnForm(String barnName, String endYear, String carrotAmount) throws InterruptedException{
+        this.driver.findElement(By.name("barnName")).clear();
+        this.driver.findElement(By.name("barnName")).sendKeys(barnName);
+        // this.driver.findElement(By.name("endPeriode")).clear();
+        String[] endYearSplit = endYear.split("-");
+        this.driver.findElement(By.name("endPeriode")).sendKeys("\t"+"\t"+endYearSplit[2]);
+        this.driver.findElement(By.name("carrotAmount")).clear();
+        this.driver.findElement(By.name("carrotAmount")).sendKeys(carrotAmount);
+        this.driver.findElement(By.xpath("//button[normalize-space()='Save']")).click();
+        waitForAlert();
+        assertEquals(driver.switchTo().alert().getText(), "Barn updated");
+        driver.switchTo().alert().accept();
+        this.driver.findElement(By.xpath("//button[normalize-space()='Close']")).click();
+    }
+
+    public int getLastRewardIndex() {
+        return this.driver.findElements(By.xpath("//table[@name='rewardTable']//tr")).size()-1;
+    }
+    
+    public void fillBarnReward(String rewardName, String carrotAmount, String rewardType) throws InterruptedException{
+        this.driver.findElement(By.name("rewardDescription")).sendKeys(rewardName);
+        this.driver.findElement(By.xpath("(//input[@name='carrotAmount'])[2]")).sendKeys(carrotAmount);
+        this.driver.findElement(By.name("givingConditional")).sendKeys(rewardType);
+        this.driver.findElement(By.cssSelector(".btn-primary")).click();
+
+        int lastIndex = this.getLastRewardIndex();
+        String rewardNameActual = this.driver.findElement(By.xpath("//table[@name='rewardTable']//tr["+lastIndex+"]/td[2]/input")).getAttribute("value");
+        String rewardCarrotAmountActual = this.driver.findElement(By.xpath("//table[@name='rewardTable']//tr["+lastIndex+"]/td[3]/input")).getAttribute("value");
+        String rewardTypeActual = this.driver.findElement(By.xpath("//table[@name='rewardTable']//tr["+lastIndex+"]/td[4]/input")).getAttribute("value");
+
+        assertEquals(rewardName, rewardNameActual);
+        assertEquals(carrotAmount, rewardCarrotAmountActual);
+        assertEquals(rewardType, rewardTypeActual);
+        
+    }
+
+    public void fillEmptyBarnReward() throws InterruptedException{
+        this.driver.findElement(By.name("rewardDescription")).sendKeys("");
+        this.driver.findElement(By.xpath("(//input[@name='carrotAmount'])[2]")).sendKeys("");
+        this.driver.findElement(By.name("givingConditional")).sendKeys("");
+        this.driver.findElement(By.cssSelector(".btn-primary")).click();
+
+        waitForAlert();
+        assertEquals(driver.switchTo().alert().getText(), "Reward creation failed");
+        driver.switchTo().alert().accept();
+        
+    }
+    
+    public String getHistoryName(){
+        return this.driver.findElement(By.cssSelector(".text-3xl:nth-child(1)")).getText();
+    }
+    
+    public String transferToManager(String carrotAmount, String message) throws InterruptedException{
+        this.driver.findElement(By.cssSelector(".bg-orange-500")).click();
+        this.driver.findElement(By.cssSelector(".css-6j8wv5-Input")).click();
+        this.driver.findElement(By.id("react-select-2-option-0")).click();
+        String receiver = this.driver.findElement(By.name("manager-name")).getAttribute("value");
+        this.driver.findElement(By.name("carrotAmount")).clear();
+        this.driver.findElement(By.name("carrotAmount")).sendKeys(carrotAmount);
+        this.driver.findElement(By.name("message")).sendKeys(message);
+        this.driver.findElement(By.cssSelector(".bg-green-600")).click();
+        waitForAlert();
+        assertEquals(driver.switchTo().alert().getText(), "Successfully distributed 10 carrot to "+receiver);
+        driver.switchTo().alert().accept();
+        this.driver.findElement(By.xpath("//button[normalize-space()='Close']")).click();
+        return receiver;
+    }
+
+    public int getLastTransaction(){
+        return this.driver.findElements(By.xpath("//table[@class='jsx-a88a12f75b797cab']//tr")).size();
+    }
+
+    public String[] getTransactionDetails(int index){
+        String[] transactionDetails = new String[3];
+        transactionDetails[0] = this.driver.findElement(By.cssSelector("tbody tr:nth-child("+index+") td:nth-child(2)")).getText();
+        transactionDetails[1] = this.driver.findElement(By.cssSelector("tbody tr:nth-child("+index+") td:nth-child(3)")).getText();
+        transactionDetails[2] = this.driver.findElement(By.cssSelector("tbody tr:nth-child("+index+") td:nth-child(5)")).getText();
+        return transactionDetails;
+    }
+
+    public int searchForActiveBarn(){
+        int lastBarn = this.getLastTableIndex();
+        int activeBarn = 0;
+        for(int i = 1; i <= lastBarn; i++){
+            String barnStatus = this.getBarnStatus(i);
+            if(barnStatus.equals("Yes")){
+                activeBarn = i;
+                return activeBarn;
+            }
+        }
+        return activeBarn;
+    }
+
+    public void setToInactiveBarn(int index) throws InterruptedException{
+        this.clickManageButton(index);
+        LocalDate now = LocalDate.now();
+        this.changeDateOnly(now.minusYears(2).format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")), now.minusYears(1).format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
+        
+    }
+
+    public void setToActiveBarn(int index) throws InterruptedException{
+        this.clickManageButton(index);
+        LocalDate now = LocalDate.now();
+        this.changeDateOnly(now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), now.plusYears(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
+    }
 }

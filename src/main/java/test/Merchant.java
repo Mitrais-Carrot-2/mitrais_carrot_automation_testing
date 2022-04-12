@@ -25,6 +25,8 @@ public class Merchant {
     //inisiasi
     @BeforeClass
     public static void beforeLogin(){
+        System.setProperty("webdriver.chrome.driver", "webdriver\\chromedriver.exe");
+
         driver = new ChromeDriver();
         loginPage=new LoginPage(driver);
         merchantPage=new MerchantPage(driver);
@@ -38,7 +40,6 @@ public class Merchant {
 
         merchantPage.goToMerchantMenu();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("merchant-container")) );
-
     }
 
 //    @Test
@@ -157,64 +158,182 @@ public class Merchant {
     //         /////////////        //
 
     //success case
+//    @Test
+//    public void createItem(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "Item "+ getRandomInts(100,200);
+//        String itemPrice = ""+getRandomInts(50,200);
+//        String itemQty = ""+getRandomInts(1,20);
+//        String itemDesc = "Description " + getRandomInts(100,1000);
+//
+//        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        merchantPage.assertCreateItem(itemName);
+//    }
+//
+//    //fail case
+//    @Test
+//    public void createItemFail(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "";
+//        String itemPrice = ""+getRandomInts(50,200);
+//        String itemQty = ""+getRandomInts(1,20);
+//        String itemDesc = "Description " + getRandomInts(100,1000);
+//
+//        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String errMsg = driver.switchTo().alert().getText();
+//        String expectedError = "Failed";
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//
+//        merchantPage.assertAlternateError(errMsg,expectedError);
+//    }
+
+    //         /////////////        //
+    //          UPDATE ITEM         //
+    //         /////////////        //
+
+//    @Test
+//    public void updateItem(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "Item Update "+ getRandomInts(100,200);
+//        String itemPrice = ""+getRandomInts(50,200);
+//        String itemQty = ""+getRandomInts(1,20);
+//        String itemDesc = "Description Update: " + getRandomInts(100,1000);
+//
+//        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
+//
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String msg = driver.switchTo().alert().getText();
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//        merchantPage.assertUpdatedItem(msg, itemName);
+//    }
+//
+//    @Test
+//    public void updateItemFailed(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "";
+//        String itemPrice = "";
+//        String itemQty = "";
+//        String itemDesc = "Description Update: " + getRandomInts(100,1000);
+//
+//        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
+//
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String msg = driver.switchTo().alert().getText();
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//        merchantPage.assertAlternateError(msg, "Update Error!");
+//    }
+
+    //         //////////////////        //
+    //          UPDATE ITEM IMAGE        //
+    //         //////////////////        //
+//    @Test
+//    public void updateItemImage(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        String imagePath = "C:\\Users\\Arel_B313\\Documents\\default.png";
+//
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        merchantPage.updateItemImage(imagePath);
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String msg = driver.switchTo().alert().getText();
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//        merchantPage.assertMessage(msg, "Successfully updated");
+//    }
+
+    //         //////////////////////        //
+    //          APPROVE/DENY REQUEST         //
+    //         //////////////////////        //
     @Test
-    public void createItem(){
+    public void approveItem(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        //load exchange
+        merchantPage.goToExchange();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Exchange Dashboard']")));
 
-        //load bazaar item page
-        merchantPage.goToBazaarItem();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
-
-        //Initialize input value
-        String itemName = "Item "+ getRandomInts(100,200);
-        String itemPrice = ""+getRandomInts(50,200);
-        String itemQty = ""+getRandomInts(1,20);
-        String itemDesc = "Description " + getRandomInts(100,1000);
-
-        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
-
-        merchantPage.assertCreateItem(itemName);
-    }
-
-    //fail case
-    @Test
-    public void createItemFail(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-
-        //load bazaar item page
-        merchantPage.goToBazaarItem();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
-
-        //Initialize input value
-        String itemName = "";
-        String itemPrice = ""+getRandomInts(50,200);
-        String itemQty = ""+getRandomInts(1,20);
-        String itemDesc = "Description " + getRandomInts(100,1000);
-
-        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
+        merchantPage.approveItem();
         wait.until(ExpectedConditions.alertIsPresent());
-        String errMsg = driver.switchTo().alert().getText();
-        String expectedError = "Failed";
+        String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-
-        merchantPage.assertAlternateError(errMsg,expectedError);
+        merchantPage.assertMessage(msg, "Success!");
     }
 
-    //After each test
-    @After
-    public void clearCache(){
-        //Delete cookies to logout user
-        driver.manage().deleteAllCookies();
+    @Test
+    public void denyItem(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        //load exchange
+        merchantPage.goToExchange();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Exchange Dashboard']")));
+
+        merchantPage.denyItem();
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        merchantPage.assertMessage(msg, "Success!");
     }
 
-    //After all tests
-    @AfterClass
-    public static void closeBrowser(){
-        //Terminate the WebDriver
-        driver.quit();
+    //         //////////////////        //
+    //             ADD MEMBER            //
+    //         //////////////////        //
+    @Test
+    public void addNewMember(){
+        merchantPage.assertNewMember();
     }
+
+    @Test
+    public void addNewMemberExist(){
+        merchantPage.assertNewMemberExist();
+    }
+
+   //After each test
+   @After
+   public void clearCache(){
+       //Delete cookies to logout user
+       driver.manage().deleteAllCookies();
+   }
+
+   //After all tests
+   @AfterClass
+   public static void closeBrowser(){
+       //Terminate the WebDriver
+       driver.quit();
+   }
 
     public int getRandomInts(Integer min, Integer max){
         Random random = new Random();
