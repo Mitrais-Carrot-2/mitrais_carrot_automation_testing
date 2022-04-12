@@ -11,10 +11,12 @@ public class LoginPage {
     WebDriver driver;
 
     //Define locators in Login Page
-    By username_loc=By.xpath("//input[@placeholder='Username']");
-    By password_loc=By.xpath("//input[@placeholder='Password']");
+//    By username_loc=By.xpath("//input[@placeholder='Username']");
+//    By password_loc=By.xpath("//input[@placeholder='Password']");
+    By username_loc=By.id("username");
+    By password_loc=By.id("password");
     By loginButton_loc=By.id("login-button");
-    By errorMsg_loc=By.xpath("//div[@class='bg-red-500 text-center text-white my-3 rounded animate-pulse']");
+    By errorMsg_loc=By.id("errorMsg");
 
 
     public LoginPage(WebDriver driver){

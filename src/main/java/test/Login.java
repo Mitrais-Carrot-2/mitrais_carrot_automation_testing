@@ -12,6 +12,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import page.DashboardPage;
 import page.HomePage;
 import page.LoginPage;
 
@@ -19,6 +20,7 @@ public class Login {
     private static WebDriver driver;
     private static LoginPage loginPage;
     private static HomePage homePage;
+    private static DashboardPage dashboardPage;
 
     //Before All Tests
     @BeforeClass
@@ -27,6 +29,7 @@ public class Login {
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
         homePage = new HomePage(driver);
+        dashboardPage = new DashboardPage(driver);
     }
 
     //BEfore each test
@@ -50,7 +53,8 @@ public class Login {
         WebDriverWait wait = new WebDriverWait(driver,Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("dashboard-title")));
         //Assert if user can see Home page
-        homePage.assertInHomePage();
+//        homePage.assertInHomePage();
+        dashboardPage.assertInDashboard();
     }
 
 
