@@ -183,6 +183,75 @@ public class MerchantPage {
 //        alert.accept();
     }
 
+    public void updateItem(String item, String price, String qty, String desc ){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer rowSize = getRows();
+        Integer selectedIndex = getRandomInts(3,rowSize);
+
+        By itemNameLoc = By.id("item-name-input");
+        By itemPriceLoc = By.id("item-price-input");
+        By itemQtyLoc = By.id("item-qty-input");
+        By itemDescLoc = By.id("item-desc-input");
+
+        By updateItemButtonLoc = By.xpath("//button[normalize-space()='Update Item']");
+
+        //locate the edit/update button
+        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[2]");
+        WebElement updateButton = this.driver.findElement(updateButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", updateButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Item']")));
+
+
+        //locate item name field
+        if (item != ""){
+            WebElement itemNameInput = this.driver.findElement(itemNameLoc);
+            itemNameInput.clear();
+            itemNameInput.sendKeys(item);
+        } else{
+            WebElement itemNameInput = this.driver.findElement(itemNameLoc);
+            itemNameInput.clear();
+        }
+
+
+        //locate item price field
+        if (price != ""){
+            WebElement itemPriceInput = this.driver.findElement(itemPriceLoc);
+            itemPriceInput.clear();
+            itemPriceInput.sendKeys(price);
+        }else{
+            WebElement itemPriceInput = this.driver.findElement(itemPriceLoc);
+            itemPriceInput.clear();
+        }
+
+        //locate item qty field
+        WebElement itemQtyInput = this.driver.findElement(itemQtyLoc);
+        itemQtyInput.clear();
+        itemQtyInput.sendKeys(qty);
+
+        //locate item desc field
+        WebElement itemDescInput = this.driver.findElement(itemDescLoc);
+        itemDescInput.clear();
+        itemDescInput.sendKeys(desc);
+
+        WebElement putItem = this.driver.findElement(updateItemButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", putItem);
+
+
+    }
+
+
+    public void updateItemImage(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer rowSize = getRows();
+        Integer selectedIndex = getRandomInts(3,rowSize);
+
+        //locate the edit/update button
+        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[2]");
+        WebElement updateButton = this.driver.findElement(updateButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", updateButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Item']")));
+
+    }
 
     public Integer getRows(){
         List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
@@ -224,7 +293,13 @@ public class MerchantPage {
 
     }
 
+    public void assertUpdatedItem(String msg, String itemName){
+        Integer updateRow = getRows();
+        String actualItem = driver.findElement(By.cssSelector("tbody tr:nth-child("+updateRow+") td:nth-child(4)")).getText();
+        Assert.assertEquals("Success Update Item!", msg);
+        Assert.assertEquals(itemName, actualItem);
 
+    }
 
     public void assertFailedAddBazaar(Integer initRow, Integer finalRow){
         Assert.assertEquals("Failed, data keep added!",initRow, finalRow);
