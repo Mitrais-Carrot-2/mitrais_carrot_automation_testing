@@ -31,4 +31,31 @@
             <scope>test</scope>
         </dependency> -->
     </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.22.2</version>
+                <configuration>
+                    <skipTests>true</skipTests>
+                </configuration>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-surefire-plugin</artifactId>-->
+<!--                <version>2.22.1</version>-->
+<!--                <configuration>-->
+<!--                    <systemPropertyVariables>-->
+<!--                        <property>-->
+<!--                            <key>webdriver.chrome.driver</key>-->
+<!--                            <value>/Users/user/Documents/chromedriver</value>-->
+<!--                        </property>-->
+<!--                    </systemPropertyVariables>-->
+<!--                    <skipTests>false</skipTests>-->
+<!--                    <argLine>-Dwebdriver.chrome.driver=/Users/user/Documents/chromedriver</argLine>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+        </plugins>
+    </build>
 </project>
