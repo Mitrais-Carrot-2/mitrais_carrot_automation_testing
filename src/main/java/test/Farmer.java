@@ -8,8 +8,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
+// import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -181,4 +182,9 @@ public class Farmer {
         waitReloadToFarmerDashboard.until(driver -> driver.findElement(By.id("farmer-dashboard")));
     }
 
+    @AfterClass
+    public static void closeBrowser(){
+        driver.manage().deleteAllCookies();
+        driver.quit();
+    }
 }
