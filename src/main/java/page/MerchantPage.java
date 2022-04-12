@@ -22,6 +22,7 @@ public class MerchantPage {
 //    By merchantMenu_loc = By.id("merchant-button");
     By bazaarButton_loc = By.xpath("//button[1]");
     By bazaarItemButton_loc = By.xpath("//button[normalize-space()='Bazaar Item']");
+    By exchangeLoc = By.xpath("//button[normalize-space()='Exchange']");
 
     By btn_add_member = By.id("add-member-button");
     By btn_staff_group = By.id("staff-group-button");
@@ -49,6 +50,11 @@ public class MerchantPage {
     public void goToBazaarItem(){
         WebElement bazaarItemButton = this.driver.findElement(this.bazaarItemButton_loc);
         bazaarItemButton.click();
+    }
+
+    public void goToExchange(){
+        WebElement exchangeButton = this.driver.findElement(this.exchangeLoc);
+        exchangeButton.click();
     }
 
     public void createBazaar( String name, String startDate, String endDate){
@@ -263,6 +269,42 @@ public class MerchantPage {
         //locate and send image
         WebElement sendImage = this.driver.findElement(updateItemImgButtonLoc);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendImage);
+    }
+
+    public void approveItem(){
+        //Pre-condition: choose first index
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer selectedIndex = 1;
+
+        By approveButtonLoc = By.xpath("//tbody//tr["+selectedIndex+"]//td[7]//button[1]");
+        By sendApprovalLoc = By.xpath("//button[normalize-space()='Approve']");
+
+        //Locate approval button on selected row
+        WebElement approveButton = this.driver.findElement(approveButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", approveButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Approve Item?']")));
+
+        //Click approve for updating the approval
+        WebElement sendApproval = this.driver.findElement(sendApprovalLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendApproval);
+    }
+
+    public void denyItem(){
+        //Pre-condition: choose first index
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer selectedIndex = 1;
+
+        By denyButtonLoc = By.xpath("//tbody//tr["+selectedIndex+"]//td[7]//button[2]");
+        By sendDenyLoc = By.xpath("//button[normalize-space()='Deny']");
+
+        //Locate approval button on selected row
+        WebElement denyButton = this.driver.findElement(denyButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", denyButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Deny Item?']")));
+
+        //Click approve for updating the approval
+        WebElement sendDeny = this.driver.findElement(sendDenyLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendDeny);
     }
 
     public Integer getRows(){

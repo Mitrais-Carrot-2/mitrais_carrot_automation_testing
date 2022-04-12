@@ -256,25 +256,61 @@ public class Merchant {
     //         //////////////////        //
     //          UPDATE ITEM IMAGE        //
     //         //////////////////        //
+//    @Test
+//    public void updateItemImage(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        String imagePath = "C:\\Users\\Arel_B313\\Documents\\default.png";
+//
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        merchantPage.updateItemImage(imagePath);
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String msg = driver.switchTo().alert().getText();
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//        merchantPage.assertMessage(msg, "Successfully updated");
+//    }
+
+    //         //////////////////////        //
+    //          APPROVE/DENY REQUEST         //
+    //         //////////////////////        //
     @Test
-    public void updateItemImage(){
+    public void approveItem(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        //load exchange
+        merchantPage.goToExchange();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Exchange Dashboard']")));
 
-        String imagePath = "C:\\Users\\Arel_B313\\Documents\\default.png";
-
-
-        //load bazaar item page
-        merchantPage.goToBazaarItem();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
-
-        merchantPage.updateItemImage(imagePath);
+        merchantPage.approveItem();
         wait.until(ExpectedConditions.alertIsPresent());
         String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        merchantPage.assertMessage(msg, "Successfully updated");
+        merchantPage.assertMessage(msg, "Success!");
     }
 
+    @Test
+    public void denyItem(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        //load exchange
+        merchantPage.goToExchange();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Exchange Dashboard']")));
+
+        merchantPage.denyItem();
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        merchantPage.assertMessage(msg, "Success!");
+    }
+
+    //         //////////////////        //
+    //             ADD MEMBER            //
+    //         //////////////////        //
     @Test
     public void addNewMember(){
         merchantPage.assertNewMember();

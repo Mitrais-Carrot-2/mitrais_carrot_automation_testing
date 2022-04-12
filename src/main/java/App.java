@@ -3,10 +3,7 @@ import org.junit.runner.Result;
 import org.junit.runner.notification.Failure;
 import page.Globals;
 import page.ManagerPage;
-import test.AddItem;
-import test.Farmer;
-import test.Login;
-import test.Manager;
+import test.*;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -26,7 +23,8 @@ public class App {
       result= junit.run(
 //              Login.class,
               // Manager.class
-              Farmer.class
+//              Farmer.class
+              Merchant.class
                 // AddItem.class
           );
     }
