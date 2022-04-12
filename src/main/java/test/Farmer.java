@@ -42,12 +42,12 @@ public class Farmer {
 
     }
 
-    @Ignore
+    @Test
     public void assertInFarmerPage() {
         farmerPage.assertInFarmerPage();
     }
 
-    @Ignore
+    @Test
     public void showManageBarn() {
         HashMap<String, String> barnInfo = farmerPage.getBarnInfo(1);
         farmerPage.clickManageButton(1);
@@ -56,7 +56,7 @@ public class Farmer {
         assertEquals(barnInfo, barnManageInfo);
     }
 
-    @Ignore
+    @Test
     public void createNewBarn() throws InterruptedException {
         HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastTableIndex());
         String lastBarnName = lastBarnInfo.get("Name");
@@ -69,7 +69,7 @@ public class Farmer {
         farmerPage.fillCreateBarnForm(newBarnName, String.valueOf(barnNumber), String.valueOf(barnNumber + 1), "1000");
     }
 
-    @Ignore
+    @Test
     public void createNewBarnWithSameName() throws InterruptedException {
         HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastTableIndex());
         String lastBarnName = lastBarnInfo.get("Name");
@@ -82,7 +82,7 @@ public class Farmer {
                 "1000");
     }
 
-    @Ignore
+    @Test
     public void editBarn() throws InterruptedException {
         HashMap<String, String> barnBefore = farmerPage.getBarnInfoWithStatus(1);
         this.showManageBarn();
@@ -117,21 +117,21 @@ public class Farmer {
                 String.valueOf(barnBefore.get("Carrot Amount")));
     }
 
-    @Ignore
+    @Test
     public void createNewBarnReward() throws InterruptedException {
         farmerPage.clickManageButton(1);
         driver.findElement(By.id("barn-info"));
         farmerPage.fillBarnReward("Test", "10", "USER_BIRTHDAY");
     }
 
-    @Ignore
+    @Test
     public void createEmptyBarnReward() throws InterruptedException {
         farmerPage.clickManageButton(1);
         driver.findElement(By.id("barn-info"));
         farmerPage.fillEmptyBarnReward();
     }
 
-    @Ignore
+    @Test
     public void checkBarnHistory() {
         String barnName = farmerPage.getBarnName(1);
         farmerPage.clickHistoryButton(1);
@@ -160,7 +160,7 @@ public class Farmer {
 
     }
 
-    @Ignore
+    @Test
     public void transferToManager() throws InterruptedException {
         this.assertDistributionPageActive();
         String carrotAmount = "10";
