@@ -21,4 +21,8 @@ public class DashboardPage {
     public void toManagerPage(){
         this.driver.findElement(btn_to_manager).click();
     }
+    
+    public void goToFarmerPage(){
+        this.driver.findElement(By.xpath("//button[@id='btn-farmer']")).click();
+    }
 }

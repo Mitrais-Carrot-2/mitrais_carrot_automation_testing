@@ -14,6 +14,6 @@ reports.
 5.	Pradipta Ratu Kinasih
 ---
 
-This Carrot Project backend is bootstrapped with BootSpring Java11 with Maven.
+This Carrot Project automation testing is using Java11 with Maven.
 
-Make sure to install dependencies and set up the database connection.
+Make sure to install dependencies and set up testing enviorment before run automation testing.

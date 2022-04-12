@@ -4,6 +4,7 @@ import org.junit.runner.notification.Failure;
 import page.Globals;
 import page.ManagerPage;
 import test.AddItem;
+import test.Farmer;
 import test.Login;
 import test.Manager;
 
@@ -24,7 +25,8 @@ public class App {
       JUnitCore junit = new JUnitCore();
       result= junit.run(
 //              Login.class,
-              Manager.class
+              // Manager.class
+              Farmer.class
                 // AddItem.class
           );
     }
