@@ -24,6 +24,8 @@ public class Merchant {
     //inisiasi
     @BeforeClass
     public static void beforeLogin(){
+        System.setProperty("webdriver.chrome.driver", "webdriver\\chromedriver.exe");
+
         driver = new ChromeDriver();
         loginPage=new LoginPage(driver);
         merchantPage=new MerchantPage(driver);
@@ -34,6 +36,8 @@ public class Merchant {
         loginPage.login("merchant", "merchant");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.xpath("//h2[normalize-space()='DASHBOARD']")));
+        merchantPage.goToMerchantMenu();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("staff-group-button")) );
     }
 
     @Test
@@ -127,6 +131,11 @@ public class Merchant {
         merchantPage.updateBazaar(bazaarName,startDate,endDate);
 
         merchantPage.assertUpdatedValue(bazaarName);
+    }
+
+    @Test
+    public void addNewMember(){
+        merchantPage.assertNewMember();
     }
 
     //After each test

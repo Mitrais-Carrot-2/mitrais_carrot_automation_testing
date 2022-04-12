@@ -22,6 +22,10 @@ public class MerchantPage {
 //    By merchantMenu_loc = By.id("merchant-button");
     By bazaarButton_loc = By.xpath("//button[1]");
 
+    By btn_add_member = By.id("add-member-button");
+    By btn_staff_group = By.id("staff-group-button");
+    By btn_create_group = By.id("create-group-button");
+    By btn_modal_save = By.id("modal-save-button");
 
     public MerchantPage(WebDriver driver) {
         this.driver=driver;
@@ -33,7 +37,6 @@ public class MerchantPage {
 
         //CLick the button
         merchantButton.click();
-
     }
 
     public void goToBazaar(){
@@ -125,7 +128,6 @@ public class MerchantPage {
 //        postBazaar.click();
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
-
         //Window alert handling
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         wait.until(ExpectedConditions.alertIsPresent());
@@ -145,7 +147,6 @@ public class MerchantPage {
 
         //Check url
         Assert.assertEquals("Mismatch", expectedURL, this.driver.getCurrentUrl());
-
     }
 
     public void assertUpdatedValue(String bazaarName){
@@ -164,7 +165,6 @@ public class MerchantPage {
 
         //Check url
         Assert.assertEquals("Mismatch", expectedURL, this.driver.getCurrentUrl());
-
     }
 
     public void assertFailedAddBazaar(Integer initRow, Integer finalRow){
@@ -173,6 +173,37 @@ public class MerchantPage {
 
     public void assertAddedRow(Integer initRow, Integer finalRow){
         Assert.assertNotEquals("Failed, no new data added!",initRow, finalRow);
+    }
+
+    public void assertNewMember(){
+        driver.findElement(this.btn_staff_group).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        wait.until(driver -> driver.findElement(this.btn_create_group));
+        driver.findElement(By.xpath("//tr[1]//td[9]//button[1]")).click();
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+        Integer totalMember = driver.findElements(By.xpath("//tbody/tr")).size();
+        driver.findElement(this.btn_add_member).click();
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+
+        Integer expectedMember = totalMember + 1;
+
+        WebElement staff = driver.findElement(By.cssSelector(".css-1s2u09g-control"));
+        staff.click();
+        Actions keyDown = new Actions(driver);
+        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+        driver.findElement(btn_modal_save).click();
+
+        wait.until(ExpectedConditions.alertIsPresent());
+        String errMsg = driver.switchTo().alert().getText();
+        String expectedError = "Staff Added!";
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+        Integer actualMember = driver.findElements(By.xpath("//tbody/tr")).size();
+
+        Assert.assertEquals("Failed, no new member added! "+errMsg, expectedError, errMsg);
+        Assert.assertEquals("Failed, no new member added! "+totalMember, expectedMember, actualMember);
     }
 
     public int getRandomInts(Integer min, Integer max){

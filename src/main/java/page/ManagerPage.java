@@ -58,7 +58,7 @@ public class ManagerPage {
         Actions keyDown = new Actions(driver);
 //        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.className("css-26l3qy-menu")));
 
         Integer totalStaff = driver.findElements(By.cssSelector(".css-4ljt47-MenuList div")).size();
