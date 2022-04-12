@@ -37,7 +37,6 @@ public class Farmer {
         dashboardPage.goToFarmerPage();
         WebDriverWait waitReloadToFarmerDashboard = new WebDriverWait(driver,Duration.ofSeconds(3));
         waitReloadToFarmerDashboard.until(driver -> driver.findElement(By.id("farmer-dashboard")));
-        
     }
 
     @Test

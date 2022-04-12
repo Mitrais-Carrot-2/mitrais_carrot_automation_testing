@@ -7,6 +7,10 @@ import org.openqa.selenium.WebDriver;
 public class DashboardPage {
     WebDriver driver;
 
+
+
+
+
     By btn_to_manager = By.id("btn-manager");
 
     public DashboardPage(WebDriver driver) {
@@ -25,4 +29,6 @@ public class DashboardPage {
     public void goToFarmerPage(){
         this.driver.findElement(By.xpath("//button[@id='btn-farmer']")).click();
     }
+
+
 }
