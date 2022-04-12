@@ -23,6 +23,10 @@ public class MerchantPage {
     By bazaarButton_loc = By.xpath("//button[1]");
     By bazaarItemButton_loc = By.xpath("//button[normalize-space()='Bazaar Item']");
 
+    By btn_add_member = By.id("add-member-button");
+    By btn_staff_group = By.id("staff-group-button");
+    By btn_create_group = By.id("create-group-button");
+    By btn_modal_save = By.id("modal-save-button");
 
     public MerchantPage(WebDriver driver) {
         this.driver=driver;
@@ -34,7 +38,6 @@ public class MerchantPage {
 
         //CLick the button
         merchantButton.click();
-
     }
 
     public void goToBazaar(){
@@ -123,7 +126,6 @@ public class MerchantPage {
 
         driver.manage().timeouts().implicitlyWait(1, TimeUnit.SECONDS);
 
-
         //Window alert handling
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
         wait.until(ExpectedConditions.alertIsPresent());
@@ -183,6 +185,75 @@ public class MerchantPage {
 //        alert.accept();
     }
 
+    public void updateItem(String item, String price, String qty, String desc ){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer rowSize = getRows();
+        Integer selectedIndex = getRandomInts(3,rowSize);
+
+        By itemNameLoc = By.id("item-name-input");
+        By itemPriceLoc = By.id("item-price-input");
+        By itemQtyLoc = By.id("item-qty-input");
+        By itemDescLoc = By.id("item-desc-input");
+
+        By updateItemButtonLoc = By.xpath("//button[normalize-space()='Update Item']");
+
+        //locate the edit/update button
+        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[2]");
+        WebElement updateButton = this.driver.findElement(updateButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", updateButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Item']")));
+
+
+        //locate item name field
+        if (item != ""){
+            WebElement itemNameInput = this.driver.findElement(itemNameLoc);
+            itemNameInput.clear();
+            itemNameInput.sendKeys(item);
+        } else{
+            WebElement itemNameInput = this.driver.findElement(itemNameLoc);
+            itemNameInput.clear();
+        }
+
+
+        //locate item price field
+        if (price != ""){
+            WebElement itemPriceInput = this.driver.findElement(itemPriceLoc);
+            itemPriceInput.clear();
+            itemPriceInput.sendKeys(price);
+        }else{
+            WebElement itemPriceInput = this.driver.findElement(itemPriceLoc);
+            itemPriceInput.clear();
+        }
+
+        //locate item qty field
+        WebElement itemQtyInput = this.driver.findElement(itemQtyLoc);
+        itemQtyInput.clear();
+        itemQtyInput.sendKeys(qty);
+
+        //locate item desc field
+        WebElement itemDescInput = this.driver.findElement(itemDescLoc);
+        itemDescInput.clear();
+        itemDescInput.sendKeys(desc);
+
+        WebElement putItem = this.driver.findElement(updateItemButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", putItem);
+
+
+    }
+
+
+    public void updateItemImage(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer rowSize = getRows();
+        Integer selectedIndex = getRandomInts(3,rowSize);
+
+        //locate the edit/update button
+        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[2]");
+        WebElement updateButton = this.driver.findElement(updateButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", updateButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Item']")));
+
+    }
 
     public Integer getRows(){
         List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
@@ -196,7 +267,6 @@ public class MerchantPage {
 
         //Check url
         Assert.assertEquals("Mismatch", expectedURL, this.driver.getCurrentUrl());
-
     }
 
     public void assertUpdatedValue(String bazaarName){
@@ -221,10 +291,15 @@ public class MerchantPage {
 
         //Check url
         Assert.assertEquals("Mismatch", expectedURL, this.driver.getCurrentUrl());
-
     }
 
+    public void assertUpdatedItem(String msg, String itemName){
+        Integer updateRow = getRows();
+        String actualItem = driver.findElement(By.cssSelector("tbody tr:nth-child("+updateRow+") td:nth-child(4)")).getText();
+        Assert.assertEquals("Success Update Item!", msg);
+        Assert.assertEquals(itemName, actualItem);
 
+    }
 
     public void assertFailedAddBazaar(Integer initRow, Integer finalRow){
         Assert.assertEquals("Failed, data keep added!",initRow, finalRow);
@@ -232,6 +307,37 @@ public class MerchantPage {
 
     public void assertAddedRow(Integer initRow, Integer finalRow){
         Assert.assertNotEquals("Failed, no new data added!",initRow, finalRow);
+    }
+
+    public void assertNewMember(){
+        driver.findElement(this.btn_staff_group).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        wait.until(driver -> driver.findElement(this.btn_create_group));
+        driver.findElement(By.xpath("//tr[1]//td[9]//button[1]")).click();
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+        Integer totalMember = driver.findElements(By.xpath("//tbody/tr")).size();
+        driver.findElement(this.btn_add_member).click();
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+
+        Integer expectedMember = totalMember + 1;
+
+        WebElement staff = driver.findElement(By.cssSelector(".css-1s2u09g-control"));
+        staff.click();
+        Actions keyDown = new Actions(driver);
+        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+        driver.findElement(btn_modal_save).click();
+
+        wait.until(ExpectedConditions.alertIsPresent());
+        String errMsg = driver.switchTo().alert().getText();
+        String expectedError = "Staff Added!";
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+        Integer actualMember = driver.findElements(By.xpath("//tbody/tr")).size();
+
+        Assert.assertEquals("Failed, no new member added! "+errMsg, expectedError, errMsg);
+        Assert.assertEquals("Failed, no new member added! "+totalMember, expectedMember, actualMember);
     }
 
     public int getRandomInts(Integer min, Integer max){

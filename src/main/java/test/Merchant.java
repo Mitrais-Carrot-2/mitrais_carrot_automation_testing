@@ -25,6 +25,8 @@ public class Merchant {
     //inisiasi
     @BeforeClass
     public static void beforeLogin(){
+        System.setProperty("webdriver.chrome.driver", "webdriver\\chromedriver.exe");
+
         driver = new ChromeDriver();
         loginPage=new LoginPage(driver);
         merchantPage=new MerchantPage(driver);
@@ -38,7 +40,6 @@ public class Merchant {
 
         merchantPage.goToMerchantMenu();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("merchant-container")) );
-
     }
 
 //    @Test
@@ -157,8 +158,57 @@ public class Merchant {
     //         /////////////        //
 
     //success case
+//    @Test
+//    public void createItem(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "Item "+ getRandomInts(100,200);
+//        String itemPrice = ""+getRandomInts(50,200);
+//        String itemQty = ""+getRandomInts(1,20);
+//        String itemDesc = "Description " + getRandomInts(100,1000);
+//
+//        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        merchantPage.assertCreateItem(itemName);
+//    }
+//
+//    //fail case
+//    @Test
+//    public void createItemFail(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "";
+//        String itemPrice = ""+getRandomInts(50,200);
+//        String itemQty = ""+getRandomInts(1,20);
+//        String itemDesc = "Description " + getRandomInts(100,1000);
+//
+//        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String errMsg = driver.switchTo().alert().getText();
+//        String expectedError = "Failed";
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//
+//        merchantPage.assertAlternateError(errMsg,expectedError);
+//    }
+
+    //         /////////////        //
+    //          UPDATE ITEM         //
+    //         /////////////        //
+
     @Test
-    public void createItem(){
+    public void updateItem(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
 
         //load bazaar item page
@@ -166,20 +216,22 @@ public class Merchant {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
 
         //Initialize input value
-        String itemName = "Item "+ getRandomInts(100,200);
+        String itemName = "Item Update "+ getRandomInts(100,200);
         String itemPrice = ""+getRandomInts(50,200);
         String itemQty = ""+getRandomInts(1,20);
-        String itemDesc = "Description " + getRandomInts(100,1000);
+        String itemDesc = "Description Update: " + getRandomInts(100,1000);
 
-        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
 
-        merchantPage.assertCreateItem(itemName);
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        merchantPage.assertUpdatedItem(msg, itemName);
     }
 
-    //fail case
     @Test
-    public void createItemFail(){
+    public void updateItemFailed(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
 
         //load bazaar item page
@@ -188,33 +240,45 @@ public class Merchant {
 
         //Initialize input value
         String itemName = "";
-        String itemPrice = ""+getRandomInts(50,200);
-        String itemQty = ""+getRandomInts(1,20);
-        String itemDesc = "Description " + getRandomInts(100,1000);
+        String itemPrice = "";
+        String itemQty = "";
+        String itemDesc = "Description Update: " + getRandomInts(100,1000);
 
-        merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
+        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
+
         wait.until(ExpectedConditions.alertIsPresent());
-        String errMsg = driver.switchTo().alert().getText();
-        String expectedError = "Failed";
+        String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-
-        merchantPage.assertAlternateError(errMsg,expectedError);
+        merchantPage.assertAlternateError(msg, "Update Error!");
     }
 
-    //After each test
-    @After
-    public void clearCache(){
-        //Delete cookies to logout user
-        driver.manage().deleteAllCookies();
+    //         //////////////////        //
+    //          UPDATE ITEM IMAGE        //
+    //         //////////////////        //
+    @Test
+    public void updateItemImage(){
+
     }
 
-    //After all tests
-    @AfterClass
-    public static void closeBrowser(){
-        //Terminate the WebDriver
-        driver.quit();
+    @Test
+    public void addNewMember(){
+        merchantPage.assertNewMember();
     }
+
+   //After each test
+   @After
+   public void clearCache(){
+       //Delete cookies to logout user
+       driver.manage().deleteAllCookies();
+   }
+
+   //After all tests
+   @AfterClass
+   public static void closeBrowser(){
+       //Terminate the WebDriver
+       driver.quit();
+   }
 
     public int getRandomInts(Integer min, Integer max){
         Random random = new Random();
