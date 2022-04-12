@@ -25,6 +25,8 @@ public class Merchant {
     //inisiasi
     @BeforeClass
     public static void beforeLogin(){
+        System.setProperty("webdriver.chrome.driver", "webdriver\\chromedriver.exe");
+
         driver = new ChromeDriver();
         loginPage=new LoginPage(driver);
         merchantPage=new MerchantPage(driver);
@@ -38,7 +40,6 @@ public class Merchant {
 
         merchantPage.goToMerchantMenu();
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("merchant-container")) );
-
     }
 
 //    @Test
@@ -274,19 +275,24 @@ public class Merchant {
         merchantPage.assertMessage(msg, "Successfully updated");
     }
 
-    //After each test
-    @After
-    public void clearCache(){
-        //Delete cookies to logout user
-        driver.manage().deleteAllCookies();
+    @Test
+    public void addNewMember(){
+        merchantPage.assertNewMember();
     }
 
-    //After all tests
-    @AfterClass
-    public static void closeBrowser(){
-        //Terminate the WebDriver
-        driver.quit();
-    }
+   //After each test
+   @After
+   public void clearCache(){
+       //Delete cookies to logout user
+       driver.manage().deleteAllCookies();
+   }
+
+   //After all tests
+   @AfterClass
+   public static void closeBrowser(){
+       //Terminate the WebDriver
+       driver.quit();
+   }
 
     public int getRandomInts(Integer min, Integer max){
         Random random = new Random();
