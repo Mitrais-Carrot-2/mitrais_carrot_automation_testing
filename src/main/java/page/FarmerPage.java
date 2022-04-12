@@ -1,5 +1,7 @@
 package page;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -197,6 +199,19 @@ public class FarmerPage {
         driver.switchTo().alert().accept();
     }
 
+    public void changeDateOnly(String startDate, String endDate) throws InterruptedException {
+        String[] startDateSplit = startDate.split("-");
+        this.driver.findElement(By.name("startPeriode")).sendKeys(startDateSplit[0]+startDateSplit[1]+"\t"+startDateSplit[2]);
+        String[] endDateSplit = endDate.split("-");
+        this.driver.findElement(By.name("endPeriode")).sendKeys(endDateSplit[0]+endDateSplit[1]+"\t"+endDateSplit[2]);
+        this.driver.findElement(By.xpath("//button[normalize-space()='Save']")).click();
+        waitForAlert();
+        assertEquals(driver.switchTo().alert().getText(), "Barn updated");
+        driver.switchTo().alert().accept();
+        Thread.sleep(1000);
+        this.driver.findElement(By.cssSelector(".text-red-600")).click();
+    }
+
     public void fillEditBarnForm(String barnName, String endYear, String carrotAmount) throws InterruptedException{
         this.driver.findElement(By.name("barnName")).clear();
         this.driver.findElement(By.name("barnName")).sendKeys(barnName);
@@ -281,12 +296,25 @@ public class FarmerPage {
         int lastBarn = this.getLastTableIndex();
         int activeBarn = 0;
         for(int i = 1; i <= lastBarn; i++){
-            String barnStatus = this.driver.findElement(By.cssSelector(".jsx-95ce7ecfba2a171f:nth-child("+i+") .jsx-95ce7ecfba2a171f:nth-child(7)")).getText();
+            String barnStatus = this.getBarnStatus(i);
             if(barnStatus.equals("Yes")){
                 activeBarn = i;
                 return activeBarn;
             }
         }
         return activeBarn;
+    }
+
+    public void setToInactiveBarn(int index) throws InterruptedException{
+        this.clickManageButton(index);
+        LocalDate now = LocalDate.now();
+        this.changeDateOnly(now.minusYears(2).format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")), now.minusYears(1).format(DateTimeFormatter.ofPattern("dd-MMM-yyyy")));
+        
+    }
+
+    public void setToActiveBarn(int index) throws InterruptedException{
+        this.clickManageButton(index);
+        LocalDate now = LocalDate.now();
+        this.changeDateOnly(now.format(DateTimeFormatter.ofPattern("dd-MM-yyyy")), now.plusYears(1).format(DateTimeFormatter.ofPattern("dd-MM-yyyy")));
     }
 }

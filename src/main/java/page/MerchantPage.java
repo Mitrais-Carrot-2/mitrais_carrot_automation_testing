@@ -392,6 +392,38 @@ public class MerchantPage {
         Assert.assertEquals("Failed, no new member added! "+totalMember, expectedMember, actualMember);
     }
 
+    public void assertNewMemberExist(){
+        driver.findElement(this.btn_staff_group).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(1));
+        wait.until(driver -> driver.findElement(this.btn_create_group));
+        driver.findElement(By.xpath("//tr[1]//td[9]//button[1]")).click();
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+        Integer totalMember = driver.findElements(By.xpath("//tbody/tr")).size();
+        driver.findElement(this.btn_add_member).click();
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+
+        Integer expectedMember = totalMember + 1;
+
+        WebElement staff = driver.findElement(By.cssSelector(".css-1s2u09g-control"));
+        staff.click();
+        Actions keyDown = new Actions(driver);
+        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+        driver.findElement(btn_modal_save).click();
+
+        wait.until(ExpectedConditions.alertIsPresent());
+        String errMsg = driver.switchTo().alert().getText();
+        String expectedError = "Failed: Duplicate data!";
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+
+        wait.until(driver -> driver.findElement(this.btn_add_member));
+
+        Integer actualMember = driver.findElements(By.xpath("//tbody/tr")).size();
+
+        Assert.assertEquals("Add new member aborted! "+errMsg, expectedError, errMsg);
+        Assert.assertNotEquals("Add new member aborted! "+totalMember, expectedMember, actualMember);
+    }
+
     public int getRandomInts(Integer min, Integer max){
         Random random = new Random();
         return random.nextInt(max - min) + min;

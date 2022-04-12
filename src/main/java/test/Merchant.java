@@ -316,6 +316,11 @@ public class Merchant {
         merchantPage.assertNewMember();
     }
 
+    @Test
+    public void addNewMemberExist(){
+        merchantPage.assertNewMemberExist();
+    }
+
    //After each test
    @After
    public void clearCache(){
