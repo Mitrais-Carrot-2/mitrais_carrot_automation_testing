@@ -240,17 +240,27 @@ public class MerchantPage {
     }
 
 
-    public void updateItemImage(){
+    public void updateItemImage(String imgPath){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         Integer rowSize = getRows();
         Integer selectedIndex = getRandomInts(3,rowSize);
 
+        By imageElmLoc = By.id("item-image-input");
+        By updateItemImgButtonLoc = By.xpath("//button[normalize-space()='Change Item Image']");
+
         //locate the edit/update button
-        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[2]");
+        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[1]");
         WebElement updateButton = this.driver.findElement(updateButtonLoc);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", updateButton);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Item']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Upload Item Image']")));
 
+        //locate input file field
+        WebElement inputImage = this.driver.findElement(imageElmLoc);
+        inputImage.sendKeys(imgPath);
+
+        //locate and send image
+        WebElement sendImage = this.driver.findElement(updateItemImgButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendImage);
     }
 
     public Integer getRows(){
@@ -312,6 +322,10 @@ public class MerchantPage {
     public int getRandomInts(Integer min, Integer max){
         Random random = new Random();
         return random.nextInt(max - min) + min;
+    }
+
+    public void assertMessage(String actualMsg, String expectedErr){
+        Assert.assertEquals(expectedErr,actualMsg);
     }
 
     public void assertAlternateError(String actualMsg, String expectedErr){

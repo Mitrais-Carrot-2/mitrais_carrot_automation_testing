@@ -206,58 +206,72 @@ public class Merchant {
     //          UPDATE ITEM         //
     //         /////////////        //
 
-    @Test
-    public void updateItem(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-
-        //load bazaar item page
-        merchantPage.goToBazaarItem();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
-
-        //Initialize input value
-        String itemName = "Item Update "+ getRandomInts(100,200);
-        String itemPrice = ""+getRandomInts(50,200);
-        String itemQty = ""+getRandomInts(1,20);
-        String itemDesc = "Description Update: " + getRandomInts(100,1000);
-
-        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
-
-        wait.until(ExpectedConditions.alertIsPresent());
-        String msg = driver.switchTo().alert().getText();
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
-        merchantPage.assertUpdatedItem(msg, itemName);
-    }
-
-    @Test
-    public void updateItemFailed(){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
-
-        //load bazaar item page
-        merchantPage.goToBazaarItem();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
-
-        //Initialize input value
-        String itemName = "";
-        String itemPrice = "";
-        String itemQty = "";
-        String itemDesc = "Description Update: " + getRandomInts(100,1000);
-
-        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
-
-        wait.until(ExpectedConditions.alertIsPresent());
-        String msg = driver.switchTo().alert().getText();
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
-        merchantPage.assertAlternateError(msg, "Update Error!");
-    }
+//    @Test
+//    public void updateItem(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "Item Update "+ getRandomInts(100,200);
+//        String itemPrice = ""+getRandomInts(50,200);
+//        String itemQty = ""+getRandomInts(1,20);
+//        String itemDesc = "Description Update: " + getRandomInts(100,1000);
+//
+//        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
+//
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String msg = driver.switchTo().alert().getText();
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//        merchantPage.assertUpdatedItem(msg, itemName);
+//    }
+//
+//    @Test
+//    public void updateItemFailed(){
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+//
+//        //load bazaar item page
+//        merchantPage.goToBazaarItem();
+//        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+//
+//        //Initialize input value
+//        String itemName = "";
+//        String itemPrice = "";
+//        String itemQty = "";
+//        String itemDesc = "Description Update: " + getRandomInts(100,1000);
+//
+//        merchantPage.updateItem(itemName, itemPrice, itemQty, itemDesc);
+//
+//        wait.until(ExpectedConditions.alertIsPresent());
+//        String msg = driver.switchTo().alert().getText();
+//        Alert alert = driver.switchTo().alert();
+//        alert.accept();
+//        merchantPage.assertAlternateError(msg, "Update Error!");
+//    }
 
     //         //////////////////        //
     //          UPDATE ITEM IMAGE        //
     //         //////////////////        //
     @Test
     public void updateItemImage(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
 
+        String imagePath = "C:\\Users\\Arel_B313\\Documents\\default.png";
+
+
+        //load bazaar item page
+        merchantPage.goToBazaarItem();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
+
+        merchantPage.updateItemImage(imagePath);
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        merchantPage.assertMessage(msg, "Successfully updated");
     }
 
     //After each test
