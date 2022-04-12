@@ -91,6 +91,10 @@ public class ManagerPage {
         Integer expectedHistory = totalHistory + 1;
         Integer currentHistory = Integer.valueOf(this.driver.findElement(this.total_transaction).getText().split(" of ")[1]);
         Assert.assertEquals("Transaction History not match!", expectedHistory, currentHistory);
+
+        String expectedMessage = "Transfer to Staff Success!";
+        String actualMessage = this.driver.findElement(By.id("success-label")).getText();
+        Assert.assertEquals("Message not match!", expectedMessage, actualMessage);
     }
 
     public void shareToStaff_NotEnoughCarrot(Long carrotAmount, String note) {
@@ -165,11 +169,14 @@ public class ManagerPage {
 
         wait.until(driver -> driver.findElement(By.id("freezer-title")));
 
-//        Integer totalStaff = Integer.valueOf(this.driver.findElement(this.total_member).getAttribute("value"));
         Long expectedCarrotGiven = currentCarrotGiven + (carrotAmount * totalMember);
         Long expectedCarrotLeft = currentCarrotLeft - (carrotAmount * totalMember);
 
         this.assertCarrotAmount(expectedCarrotGiven, expectedCarrotLeft);
+
+        String expectedMessage = "Transfer to Group Success!";
+        String actualMessage = this.driver.findElement(By.id("success-label")).getText();
+        Assert.assertEquals("Message not match!", expectedMessage, actualMessage);
     }
 
     public void shareToGroup_NoCarrot(Long carrotAmount, String note) {
