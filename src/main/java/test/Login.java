@@ -13,13 +13,11 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import page.DashboardPage;
-import page.HomePage;
 import page.LoginPage;
 
 public class Login {
     private static WebDriver driver;
     private static LoginPage loginPage;
-    private static HomePage homePage;
     private static DashboardPage dashboardPage;
 
     // Before All Tests
@@ -29,7 +27,6 @@ public class Login {
         // Testing\\contohselenium\\lib\\chromedriver.exe\"");
         driver = new ChromeDriver();
         loginPage = new LoginPage(driver);
-        homePage = new HomePage(driver);
         dashboardPage = new DashboardPage(driver);
     }
 
