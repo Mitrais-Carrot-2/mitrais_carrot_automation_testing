@@ -16,11 +16,6 @@ public class UpdateProfileInfo {
     private static LoginPage loginPage;
     private static UserProfilePage userProfilePage;
 
-
-    public void setWait() throws InterruptedException {
-        Thread.sleep(3000);
-    }
-
     @BeforeClass
     public static void loginToUserProfilePage() {
         System.setProperty("webdriver.chrome.driver", "webdriver\\chromedriver.exe");
