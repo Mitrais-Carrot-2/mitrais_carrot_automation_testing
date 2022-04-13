@@ -1,8 +1,6 @@
 package test;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -72,6 +70,19 @@ public class UpdateProfileInfo {
 
         userProfilePage.insertUpdateImageData(imagePath);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".container.mx-auto.my-5.break-words")));
+    }
+    //After each test
+    @After
+    public void clearCache(){
+        //Delete cookies to logout user
+        driver.manage().deleteAllCookies();
+    }
+
+    //After all tests
+    @AfterClass
+    public static void closeBrowser(){
+        //Terminate the WebDriver
+        driver.quit();
     }
 
 }
