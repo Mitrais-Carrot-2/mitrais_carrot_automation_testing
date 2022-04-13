@@ -77,7 +77,7 @@ public class FarmerPage {
     }
 
     public void assertInDistributionPageActive() {
-        driver.findElement(By.xpath("//h1[@class='text-purple-500 text-4xl font-bold lowercase ml-2 mb-2']"));
+        driver.findElement(By.id("farmer-dashboard"));
     }
 
     public void assertInDistributionPageInactive() {
@@ -277,7 +277,7 @@ public class FarmerPage {
     }
 
     public String transferToManager(String carrotAmount, String message) throws InterruptedException {
-        this.driver.findElement(By.cssSelector(".bg-orange-500")).click();
+        this.driver.findElement(By.cssSelector(".btn.btn-info.text-white.py-2.px-4.rounded")).click();
         this.driver.findElement(By.cssSelector(".css-6j8wv5-Input")).click();
         this.driver.findElement(By.id("react-select-2-option-0")).click();
         String receiver = this.driver.findElement(By.name("manager-name")).getAttribute("value");

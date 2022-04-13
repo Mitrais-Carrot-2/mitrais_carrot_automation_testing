@@ -10,7 +10,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 
-import page.HomePage;
 import page.MerchantPage;
 import page.LoginPage;
 
