@@ -22,6 +22,7 @@ public class MerchantPage {
 //    By merchantMenu_loc = By.id("merchant-button");
     By bazaarButton_loc = By.xpath("//button[1]");
     By bazaarItemButton_loc = By.xpath("//button[normalize-space()='Bazaar Item']");
+    By exchangeLoc = By.xpath("//button[normalize-space()='Exchange']");
 
     By btn_add_member = By.id("add-member-button");
     By btn_staff_group = By.id("staff-group-button");
@@ -49,6 +50,17 @@ public class MerchantPage {
     public void goToBazaarItem(){
         WebElement bazaarItemButton = this.driver.findElement(this.bazaarItemButton_loc);
         bazaarItemButton.click();
+    }
+
+    public void goToExchange(){
+        WebElement exchangeButton = this.driver.findElement(this.exchangeLoc);
+        exchangeButton.click();
+    }
+
+    public void goToStaffGroup(){
+        driver.findElement(this.btn_staff_group).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(driver -> driver.findElement(this.btn_create_group));
     }
 
     public void createBazaar( String name, String startDate, String endDate){
@@ -242,17 +254,153 @@ public class MerchantPage {
     }
 
 
-    public void updateItemImage(){
+    public void updateItemImage(String imgPath){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         Integer rowSize = getRows();
         Integer selectedIndex = getRandomInts(3,rowSize);
 
+        By imageElmLoc = By.id("item-image-input");
+        By updateItemImgButtonLoc = By.xpath("//button[normalize-space()='Change Item Image']");
+
         //locate the edit/update button
-        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[2]");
+        By updateButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[8]/button[1]");
         WebElement updateButton = this.driver.findElement(updateButtonLoc);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", updateButton);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Item']")));
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Upload Item Image']")));
 
+        //locate input file field
+        WebElement inputImage = this.driver.findElement(imageElmLoc);
+        inputImage.sendKeys(imgPath);
+
+        //locate and send image
+        WebElement sendImage = this.driver.findElement(updateItemImgButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendImage);
+    }
+
+    public void approveItem(){
+        //Pre-condition: choose first index
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer selectedIndex = 1;
+
+        By approveButtonLoc = By.xpath("//tbody//tr["+selectedIndex+"]//td[7]//button[1]");
+        By sendApprovalLoc = By.xpath("//button[normalize-space()='Approve']");
+
+        //Locate approval button on selected row
+        WebElement approveButton = this.driver.findElement(approveButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", approveButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Approve Item?']")));
+
+        //Click approve for updating the approval
+        WebElement sendApproval = this.driver.findElement(sendApprovalLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendApproval);
+    }
+
+    public void denyItem(){
+        //Pre-condition: choose first index
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer selectedIndex = 1;
+
+        By denyButtonLoc = By.xpath("//tbody//tr["+selectedIndex+"]//td[7]//button[2]");
+        By sendDenyLoc = By.xpath("//button[normalize-space()='Deny']");
+
+        //Locate approval button on selected row
+        WebElement denyButton = this.driver.findElement(denyButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", denyButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Deny Item?']")));
+
+        //Click approve for updating the approval
+        WebElement sendDeny = this.driver.findElement(sendDenyLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendDeny);
+    }
+
+    public void createStaffGroup(String name, String note, String carrot){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+
+        //locators
+        By groupNameLoc = By.xpath("//input[@name='groupName']");
+        By groupNoteLoc = By.xpath("//input[@name='groupNote']");
+        By carrotLoc = By.xpath("//input[@name='groupAllocation']");
+        By managerLoc = By.cssSelector(".css-6j8wv5-Input");
+
+        By createGroupButtonLoc = By.xpath("//button[normalize-space()='Create Group']");
+
+        //click Create New Group
+        WebElement createGroup = this.driver.findElement(btn_create_group);
+        createGroup.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Create Group']")));
+
+        //input group name
+        WebElement groupName = driver.findElement(groupNameLoc);
+        groupName.sendKeys(name);
+
+        //input group note
+        WebElement createNote = this.driver.findElement(groupNoteLoc);
+        createNote.sendKeys(note);
+
+        //input group carrot allocation
+        WebElement createCarrot = this.driver.findElement(carrotLoc);
+        createCarrot.sendKeys(carrot);
+
+        //input manager id
+        WebElement managerName = driver.findElement(managerLoc);
+        managerName.click();
+        Actions keyDown = new Actions(driver);
+        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+
+        //click create group button
+        WebElement createGroupButton = this.driver.findElement(createGroupButtonLoc);
+        createGroupButton.click();
+
+    }
+
+    public void updateStaffGroup(String name, String note, String carrot){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer rowSize = getRows();
+        Integer selectedIndex = getRandomInts(3,rowSize);
+
+        By groupNameLoc = By.id("group-name-input");
+        By groupNoteLoc = By.id("group-notes-input");
+        By groupCarrotLoc = By.id("group-carrot-input");
+//        By managerLoc = By.cssSelector(".css-6j8wv5-Input");
+        By managerLoc = By.name("manager-id");
+
+        By editButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[9]/button[2]");
+
+        By saveButtonLoc = By.xpath("//button[normalize-space()='Update Group']");
+
+        //locate edit button
+        WebElement editButton = this.driver.findElement(editButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", editButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Group']")));
+
+        //input group name
+        if (name == ""){
+            WebElement groupName = this.driver.findElement(groupNameLoc);
+            groupName.clear();
+        }else{
+            WebElement groupName = this.driver.findElement(groupNameLoc);
+            groupName.clear();
+            groupName.sendKeys(name);
+        }
+        WebElement groupName = this.driver.findElement(groupNameLoc);
+        groupName.clear();
+        groupName.sendKeys(name);
+
+        //input group note
+        WebElement groupNotes = this.driver.findElement(groupNoteLoc);
+        groupNotes.clear();
+        groupNotes.sendKeys(note);
+
+        //input carrot allocation
+        WebElement carrotGroup = this.driver.findElement(groupCarrotLoc);
+        carrotGroup.clear();
+        carrotGroup.sendKeys(carrot);
+
+        //save group
+        WebElement saveGroup = this.driver.findElement(saveButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveGroup);
+
+//        .css-1pahdxg-control .css-6j8wv5-Input
     }
 
     public Integer getRows(){
@@ -375,6 +523,10 @@ public class MerchantPage {
     public int getRandomInts(Integer min, Integer max){
         Random random = new Random();
         return random.nextInt(max - min) + min;
+    }
+
+    public void assertMessage(String actualMsg, String expectedErr){
+        Assert.assertEquals(expectedErr,actualMsg);
     }
 
     public void assertAlternateError(String actualMsg, String expectedErr){
