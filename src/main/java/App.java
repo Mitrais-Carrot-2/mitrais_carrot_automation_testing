@@ -5,7 +5,6 @@ import page.Globals;
 import test.Farmer;
 import test.Login;
 import test.Manager;
-import page.ManagerPage;
 import test.*;
 
 import java.io.FileWriter;
@@ -25,11 +24,11 @@ public class App {
     // Run the test
     JUnitCore junit = new JUnitCore();
     result = junit.run(
-        // Login.class,
-        // Manager.class
-        // Farmer.class
-        // Merchant.class
-        // UpdateProfileInfo.class
+        Login.class,
+        Manager.class,
+        Farmer.class,
+        Merchant.class,
+        UpdateProfileInfo.class,
         Admin.class);
 
   }
