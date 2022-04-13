@@ -177,17 +177,15 @@ public class Farmer {
             farmerPage.setToActiveBarn(1);
         }
 
-            this.assertDistributionPageActive();
-            String carrotAmount = "10";
-            String message = "test";
-            String receiver = farmerPage.transferToManager(carrotAmount, message);
+        this.assertDistributionPageActive();
+        String carrotAmount = "10";
+        String message = "test";
+        String receiver = farmerPage.transferToManager(carrotAmount, message);
 
-            String[] transactionDetails = farmerPage.getTransactionDetails(farmerPage.getLastTableIndex());
-            assertEquals(receiver, transactionDetails[0]);
-            assertEquals(carrotAmount, transactionDetails[1]);
-            assertEquals(message, transactionDetails[2]);
-        
-
+        String[] transactionDetails = farmerPage.getTransactionDetails(farmerPage.getLastTableIndex());
+        assertEquals(receiver, transactionDetails[0]);
+        assertEquals(carrotAmount, transactionDetails[1]);
+        assertEquals(message, transactionDetails[2]);
     }
 
     @After

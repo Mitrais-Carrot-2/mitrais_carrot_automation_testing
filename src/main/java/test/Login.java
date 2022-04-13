@@ -57,7 +57,6 @@ public class Login {
         dashboardPage.assertInDashboard();
     }
 
-
     @Test
     public void no_username_login(){
         //Login with empty username

@@ -25,8 +25,8 @@ public class App {
       JUnitCore junit = new JUnitCore();
       result= junit.run(
 //              Login.class,
-              // Manager.class
-              Farmer.class
+               Manager.class
+//              Farmer.class
                 // AddItem.class
           );
     }

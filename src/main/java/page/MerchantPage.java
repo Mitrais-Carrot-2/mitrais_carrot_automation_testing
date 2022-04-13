@@ -382,7 +382,6 @@ public class MerchantPage {
     }
 
     public void assertErrorMessage(String actualMsg){
-
         Assert.assertEquals("Failed: Duplicate data!", actualMsg);
     }
 }

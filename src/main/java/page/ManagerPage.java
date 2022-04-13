@@ -56,7 +56,6 @@ public class ManagerPage {
 
         driver.findElement(this.staff_id).click();
         Actions keyDown = new Actions(driver);
-//        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.className("css-26l3qy-menu")));
@@ -88,6 +87,7 @@ public class ManagerPage {
         Long expectedCarrotLeft = currentCarrotLeft - carrotAmount;
 
         this.assertCarrotAmount(expectedCarrotGiven, expectedCarrotLeft);
+
         Integer expectedHistory = totalHistory + 1;
         Integer currentHistory = Integer.valueOf(this.driver.findElement(this.total_transaction).getText().split(" of ")[1]);
         Assert.assertEquals("Transaction History not match!", expectedHistory, currentHistory);
@@ -116,10 +116,6 @@ public class ManagerPage {
     }
 
     public void shareToStaff_NoCarrot(Long carrotAmount, String note) {
-        Long currentCarrotGiven = Long.parseLong(this.driver.findElement(this.carrot_given).getAttribute("value"));
-        Long currentCarrotLeft = Long.parseLong(this.driver.findElement(this.carrot_left).getAttribute("value"));
-        Integer totalHistory = Integer.valueOf(this.driver.findElement(this.total_transaction).getText().split(" of ")[1]);
-
         driver.findElement(this.tab_staff).click();
         driver.findElement(this.btn_share_to_staff).click();
 
@@ -180,9 +176,6 @@ public class ManagerPage {
     }
 
     public void shareToGroup_NoCarrot(Long carrotAmount, String note) {
-        Long currentCarrotGiven = Long.parseLong(this.driver.findElement(this.carrot_given).getAttribute("value"));
-        Long currentCarrotLeft = Long.parseLong(this.driver.findElement(this.carrot_left).getAttribute("value"));
-
         driver.findElement(this.tab_group).click();
         driver.findElement(this.btn_share_to_group).click();
 
