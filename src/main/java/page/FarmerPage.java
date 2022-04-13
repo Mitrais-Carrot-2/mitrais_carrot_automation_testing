@@ -2,7 +2,6 @@ package page;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.HashMap;
 
 import org.junit.Assert;
@@ -14,7 +13,6 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.NoAlertPresentException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.slf4j.Logger;
 
 public class FarmerPage {
     WebDriver driver;
@@ -23,6 +21,7 @@ public class FarmerPage {
 
     By dasboard_button_loc = By.xpath("//button[normalize-space()='Dashboard']");
     By distribution_button_loc = By.xpath("//button[normalize-space()='Distribution']");
+    By barn_table_loc = By.xpath("//tbody/tr");
 
     // get Barn Name by Index
     By barnName_loc(int index) {
@@ -75,6 +74,14 @@ public class FarmerPage {
     public void assertInFarmerPage() {
         // Assert URL is as expected
         Assert.assertEquals(this.driver.getCurrentUrl(), "http://localhost:3000/farmer");
+    }
+
+    public void assertInDistributionPageActive(){
+        driver.findElement(By.xpath("//h1[@class='text-purple-500 text-4xl font-bold lowercase ml-2 mb-2']"));
+    }
+
+    public void assertInDistributionPageInactive(){
+        driver.findElement(By.xpath("//h1[normalize-space()='No Active Barn']"));
     }
 
     public void clickDashboardButton() {
@@ -148,8 +155,8 @@ public class FarmerPage {
         return barnInfo;
     }
 
-    public int getLastTableIndex() {
-        return this.driver.findElements(By.xpath("//tbody/tr")).size();
+    public int getLastBarnIndex() {
+        return this.driver.findElements(barn_table_loc).size();
     }
 
     public void clickCreateBarnButton() {
@@ -293,7 +300,7 @@ public class FarmerPage {
     }
 
     public int searchForActiveBarn(){
-        int lastBarn = this.getLastTableIndex();
+        int lastBarn = this.getLastBarnIndex();
         int activeBarn = 0;
         for(int i = 1; i <= lastBarn; i++){
             String barnStatus = this.getBarnStatus(i);
