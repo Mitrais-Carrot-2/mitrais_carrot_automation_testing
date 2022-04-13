@@ -57,6 +57,12 @@ public class MerchantPage {
         exchangeButton.click();
     }
 
+    public void goToStaffGroup(){
+        driver.findElement(this.btn_staff_group).click();
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        wait.until(driver -> driver.findElement(this.btn_create_group));
+    }
+
     public void createBazaar( String name, String startDate, String endDate){
         By createBazaar = By.xpath("//button[normalize-space()='Create New Bazaar']");
         By inputBazName = By.xpath("//input[@name='bazaarName']");
@@ -305,6 +311,96 @@ public class MerchantPage {
         //Click approve for updating the approval
         WebElement sendDeny = this.driver.findElement(sendDenyLoc);
         ((JavascriptExecutor) driver).executeScript("arguments[0].click();", sendDeny);
+    }
+
+    public void createStaffGroup(String name, String note, String carrot){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+
+        //locators
+        By groupNameLoc = By.xpath("//input[@name='groupName']");
+        By groupNoteLoc = By.xpath("//input[@name='groupNote']");
+        By carrotLoc = By.xpath("//input[@name='groupAllocation']");
+        By managerLoc = By.cssSelector(".css-6j8wv5-Input");
+
+        By createGroupButtonLoc = By.xpath("//button[normalize-space()='Create Group']");
+
+        //click Create New Group
+        WebElement createGroup = this.driver.findElement(btn_create_group);
+        createGroup.click();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Create Group']")));
+
+        //input group name
+        WebElement groupName = driver.findElement(groupNameLoc);
+        groupName.sendKeys(name);
+
+        //input group note
+        WebElement createNote = this.driver.findElement(groupNoteLoc);
+        createNote.sendKeys(note);
+
+        //input group carrot allocation
+        WebElement createCarrot = this.driver.findElement(carrotLoc);
+        createCarrot.sendKeys(carrot);
+
+        //input manager id
+        WebElement managerName = driver.findElement(managerLoc);
+        managerName.click();
+        Actions keyDown = new Actions(driver);
+        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+
+        //click create group button
+        WebElement createGroupButton = this.driver.findElement(createGroupButtonLoc);
+        createGroupButton.click();
+
+    }
+
+    public void updateStaffGroup(String name, String note, String carrot){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        Integer rowSize = getRows();
+        Integer selectedIndex = getRandomInts(3,rowSize);
+
+        By groupNameLoc = By.id("group-name-input");
+        By groupNoteLoc = By.id("group-notes-input");
+        By groupCarrotLoc = By.id("group-carrot-input");
+//        By managerLoc = By.cssSelector(".css-6j8wv5-Input");
+        By managerLoc = By.name("manager-id");
+
+        By editButtonLoc = By.xpath("//tbody/tr["+selectedIndex+"]/td[9]/button[2]");
+
+        By saveButtonLoc = By.xpath("//button[normalize-space()='Update Group']");
+
+        //locate edit button
+        WebElement editButton = this.driver.findElement(editButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true); arguments[0].click()", editButton);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h3[normalize-space()='Update Group']")));
+
+        //input group name
+        if (name == ""){
+            WebElement groupName = this.driver.findElement(groupNameLoc);
+            groupName.clear();
+        }else{
+            WebElement groupName = this.driver.findElement(groupNameLoc);
+            groupName.clear();
+            groupName.sendKeys(name);
+        }
+        WebElement groupName = this.driver.findElement(groupNameLoc);
+        groupName.clear();
+        groupName.sendKeys(name);
+
+        //input group note
+        WebElement groupNotes = this.driver.findElement(groupNoteLoc);
+        groupNotes.clear();
+        groupNotes.sendKeys(note);
+
+        //input carrot allocation
+        WebElement carrotGroup = this.driver.findElement(groupCarrotLoc);
+        carrotGroup.clear();
+        carrotGroup.sendKeys(carrot);
+
+        //save group
+        WebElement saveGroup = this.driver.findElement(saveButtonLoc);
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", saveGroup);
+
+//        .css-1pahdxg-control .css-6j8wv5-Input
     }
 
     public Integer getRows(){
