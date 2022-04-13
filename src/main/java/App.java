@@ -26,7 +26,8 @@ public class App {
         // Manager.class
         // Farmer.class
         // Merchant.class
-        UpdateProfileInfo.class);
+        // UpdateProfileInfo.class
+        Admin.class);
   }
 
   private static void reportTestResult() {
