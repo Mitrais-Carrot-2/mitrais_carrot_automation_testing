@@ -10,7 +10,6 @@ import java.util.HashMap;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -38,8 +37,7 @@ public class Farmer {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("btn-farmer")));
         dashboardPage.goToFarmerPage();
-        WebDriverWait waitReloadToFarmerDashboard = new WebDriverWait(driver, Duration.ofSeconds(3));
-        waitReloadToFarmerDashboard.until(driver -> driver.findElement(By.id("farmer-dashboard")));
+        wait.until(driver -> driver.findElement(By.id("farmer-dashboard")));
 
     }
 
@@ -57,9 +55,9 @@ public class Farmer {
         assertEquals(barnInfo, barnManageInfo);
     }
 
-    @Ignore
+    @Test
     public void createNewBarn() throws InterruptedException {
-        HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastTableIndex());
+        HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastBarnIndex());
         String lastBarnName = lastBarnInfo.get("Name");
         String[] lastBarnNameSplited = lastBarnName.split(" ", 2);
         int barnNumber = Integer.parseUnsignedInt(lastBarnNameSplited[1]) + 1;
@@ -72,7 +70,7 @@ public class Farmer {
 
     @Test
     public void createNewBarnWithSameName() throws InterruptedException {
-        HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastTableIndex());
+        HashMap<String, String> lastBarnInfo = farmerPage.getBarnInfo(farmerPage.getLastBarnIndex());
         String lastBarnName = lastBarnInfo.get("Name");
         String[] lastBarnNameSplited = lastBarnName.split(" ", 2);
         int barnNumber = Integer.parseUnsignedInt(lastBarnNameSplited[1]);
@@ -150,14 +148,14 @@ public class Farmer {
             farmerPage.clickDistributionButton();
             farmerPage.clickDashboardButton();
             farmerPage.clickDistributionButton();
-            driver.findElement(By.xpath("//h1[@class='text-purple-500 text-4xl font-bold lowercase ml-2 mb-2']"));
+            farmerPage.assertInDistributionPageActive();
         }
     }
 
     @Test
     public void assertDistributionPageInactive() throws InterruptedException {
         int activeBarn = farmerPage.searchForActiveBarn();
-        while (activeBarn != 0){
+        while (activeBarn != 0) {
             farmerPage.setToInactiveBarn(activeBarn);
             activeBarn = farmerPage.searchForActiveBarn();
         }
@@ -165,7 +163,7 @@ public class Farmer {
             farmerPage.clickDistributionButton();
             farmerPage.clickDashboardButton();
             farmerPage.clickDistributionButton();
-            driver.findElement(By.xpath("//h1[normalize-space()='No Active Barn']"));
+            farmerPage.assertInDistributionPageInactive();
         }
 
     }
@@ -177,16 +175,16 @@ public class Farmer {
             farmerPage.setToActiveBarn(1);
         }
 
-            this.assertDistributionPageActive();
-            String carrotAmount = "10";
-            String message = "test";
-            String receiver = farmerPage.transferToManager(carrotAmount, message);
+        this.assertDistributionPageActive();
+        String carrotAmount = "10";
+        String message = "test";
+        String receiver = farmerPage.transferToManager(carrotAmount, message);
 
-            String[] transactionDetails = farmerPage.getTransactionDetails(farmerPage.getLastTableIndex());
-            assertEquals(receiver, transactionDetails[0]);
-            assertEquals(carrotAmount, transactionDetails[1]);
-            assertEquals(message, transactionDetails[2]);
-        
+        String[] transactionDetails = farmerPage.getTransactionDetails(farmerPage.getLastBarnIndex());
+        assertEquals(receiver, transactionDetails[0]);
+        assertEquals(carrotAmount, transactionDetails[1]);
+        assertEquals(message, transactionDetails[2]);
+
 
     }
 
