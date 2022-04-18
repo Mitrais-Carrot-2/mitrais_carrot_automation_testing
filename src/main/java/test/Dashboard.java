@@ -75,14 +75,14 @@ public class Dashboard {
 
     @Test
     public void checkTransferHistory() {
-        dashboardPage.buyItemCheckTransferHistory(merchantPage, itemDetailsPage, wait, carrotAmount, 7);
+        dashboardPage.buyItemCheckTransferHistory(merchantPage, itemDetailsPage, wait, carrotAmount, 8);
     }
 
 //    @After
 //    public void clearCache(){
 //        driver.manage().deleteAllCookies();
 //    }
-
+//
 //    @AfterClass
 //    public static void closeBrowser(){
 //        driver.quit();
