@@ -45,14 +45,6 @@ public class UserProfilePage {
 
         WebElement btnSubmit = this.driver.findElement(By.xpath("//button[@id='modal-save-button']"));
         btnSubmit.click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-
-        wait.until(ExpectedConditions.alertIsPresent());
-        String msg = driver.switchTo().alert().getText();
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
-        assertMessage(msg, "Successfully updated");
     }
 
     public void goToUpdateProfile() {
@@ -83,14 +75,6 @@ public class UserProfilePage {
 
         WebElement btnSubmit = this.driver.findElement(By.xpath("//button[@id='modal-save-button']"));
         btnSubmit.click();
-
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        wait.until(ExpectedConditions.alertIsPresent());
-        String msg = driver.switchTo().alert().getText();
-        Alert alert = driver.switchTo().alert();
-        alert.accept();
-        assertMessage(msg, "Successfully updated");
-
     }
 
     public void goToUpdateImage() {

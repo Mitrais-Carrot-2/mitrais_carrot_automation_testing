@@ -105,16 +105,10 @@ public class DashboardPage {
         goToTransferHistoryPage();
         wait.until(driver -> this.driver.findElement(By.xpath("//span[@class='sc-bZkfAO sc-kLLXSd lmGpws OHwJB']")));
 
-
-//        List<WebElement> rows = this.driver.findElements(By.xpath("//div[@class='sc-hHLeRK gFYXSL rdt_TableBody']"));
-//        Integer rowSize = rows.size();
-//
-//        System.out.println("row size = " + rowSize);
-
         long numTransfer = Long.parseLong(this.driver.findElement(By.xpath("//span[@class='sc-bZkfAO sc-kLLXSd lmGpws OHwJB']")).getText().split(" ")[2]);
 
-//        goToDashboard();
-//        wait.until(driver -> driver.findElement(By.id("carrot-amount-dashboard")));
+        goToDashboard();
+        wait.until(driver -> driver.findElement(By.id("carrot-amount-dashboard")));
 
         return numTransfer;
     }
@@ -123,18 +117,15 @@ public class DashboardPage {
         long prevNumTransfer = checkTransferHistory(wait);
         System.out.println("prev num transfer = " + prevNumTransfer);
 
+        buyItem(merchantPage, itemDetailsPage, wait, carrotAmount, index);
+
         goToDashboard();
         wait.until(driver -> driver.findElement(By.id("carrot-amount-dashboard")));
 
-        buyItem(merchantPage, itemDetailsPage, wait, carrotAmount, index);
+        long newNumTransfer = checkTransferHistory(wait);
+        System.out.println("new num transfer = " + newNumTransfer);
 
-//        goToDashboard();
-//        wait.until(driver -> driver.findElement(item_name(index)));
-//
-//        long newNumTransfer = checkTransferHistory(wait);
-//        System.out.println("new num transfer = " + newNumTransfer);
-//
-//        Assert.assertEquals(newNumTransfer, (prevNumTransfer + 1));
+        Assert.assertEquals(newNumTransfer, (prevNumTransfer + 1));
     }
 
     public void goToTransferHistoryPage() {
