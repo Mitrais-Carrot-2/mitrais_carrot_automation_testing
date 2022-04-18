@@ -240,7 +240,11 @@ public class FarmerPage {
     public void fillBarnReward(String rewardName, String carrotAmount, String rewardType) throws InterruptedException {
         this.driver.findElement(By.name("rewardDescription")).sendKeys(rewardName);
         this.driver.findElement(By.xpath("(//input[@name='carrotAmount'])[2]")).sendKeys(carrotAmount);
-        this.driver.findElement(By.name("givingConditional")).sendKeys(rewardType);
+        this.driver.findElement(By.cssSelector(".css-tj5bde-Svg")).click();
+        WebElement option = driver.findElement(By.id("react-select-2-option-0"));
+        JavascriptExecutor executor = (JavascriptExecutor) driver;
+        executor.executeScript("arguments[0].click();", option);
+        // this.driver.findElement(By.id("react-select-2-option-0")).click();
         this.driver.findElement(By.cssSelector(".btn-primary")).click();
 
         int lastIndex = this.getLastRewardIndex();
@@ -250,20 +254,20 @@ public class FarmerPage {
         String rewardCarrotAmountActual = this.driver
                 .findElement(By.xpath("//table[@name='rewardTable']//tr[" + lastIndex + "]/td[3]/input"))
                 .getAttribute("value");
-        String rewardTypeActual = this.driver
-                .findElement(By.xpath("//table[@name='rewardTable']//tr[" + lastIndex + "]/td[4]/input"))
-                .getAttribute("value");
+        // String rewardTypeActual = this.driver
+        //         .findElement(By.xpath("//table[@name='rewardTable']//tr[" + lastIndex + "]/td[3]/input"))
+        //         .getAttribute("value");
 
         assertEquals(rewardName, rewardNameActual);
         assertEquals(carrotAmount, rewardCarrotAmountActual);
-        assertEquals(rewardType, rewardTypeActual);
+        // assertEquals(rewardType, rewardTypeActual);
 
     }
 
     public void fillEmptyBarnReward() throws InterruptedException {
         this.driver.findElement(By.name("rewardDescription")).sendKeys("");
         this.driver.findElement(By.xpath("(//input[@name='carrotAmount'])[2]")).sendKeys("");
-        this.driver.findElement(By.name("givingConditional")).sendKeys("");
+        // this.driver.findElement(By.name("givingConditional")).sendKeys("");
         this.driver.findElement(By.cssSelector(".btn-primary")).click();
 
         waitForAlert();
