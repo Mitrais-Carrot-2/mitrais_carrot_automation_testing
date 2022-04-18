@@ -151,6 +151,7 @@ public class ManagerPage {
     public void shareToGroup(Long carrotAmount, String note) {
         Long currentCarrotGiven = Long.parseLong(this.driver.findElement(this.carrot_given).getAttribute("value"));
         Long currentCarrotLeft = Long.parseLong(this.driver.findElement(this.carrot_left).getAttribute("value"));
+        Integer totalHistory = Integer.valueOf(this.driver.findElement(this.total_transaction).getText().split(" of ")[1]);
 
         driver.findElement(this.tab_group).click();
         driver.findElement(this.btn_share_to_group).click();
@@ -169,6 +170,10 @@ public class ManagerPage {
         Long expectedCarrotLeft = currentCarrotLeft - (carrotAmount * totalMember);
 
         this.assertCarrotAmount(expectedCarrotGiven, expectedCarrotLeft);
+
+        Integer expectedHistory = totalHistory + totalMember;
+        Integer currentHistory = Integer.valueOf(this.driver.findElement(this.total_transaction).getText().split(" of ")[1]);
+        Assert.assertEquals("Transaction History not match!", expectedHistory, currentHistory);
 
         String expectedMessage = "Transfer to Group Success!";
         String actualMessage = this.driver.findElement(By.id("success-label")).getText();
