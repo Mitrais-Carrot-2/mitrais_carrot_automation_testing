@@ -82,7 +82,7 @@ public class AdminPage {
         WebElement supervisorId_input = driver.findElement(By.cssSelector(
                 "body > div:nth-child(2) > section:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(20) > div:nth-child(3) > div:nth-child(1) > div:nth-child(2)"));
         supervisorId_input.click();
-        keyDown.sendKeys(Keys.chord(Keys.DOWN, Keys.ENTER)).perform();
+        keyDown.sendKeys(Keys.chord(Keys.ENTER)).perform();
 
         WebElement jobFamily_input = driver.findElement(By.cssSelector(
                 "body > div:nth-child(2) > section:nth-child(1) > div:nth-child(1) > div:nth-child(2) > div:nth-child(22) > div:nth-child(3) > div:nth-child(1) > div:nth-child(2)"));

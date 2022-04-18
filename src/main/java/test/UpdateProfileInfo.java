@@ -1,6 +1,7 @@
 package test;
 
 import org.junit.*;
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -42,6 +43,28 @@ public class UpdateProfileInfo {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body > div:nth-child(1) > div:nth-child(1) > div:nth-child(5) > div:nth-child(1)")));
 
         userProfilePage.insertChangePasswordData("manager","manager","manager");
+
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        userProfilePage.assertMessage(msg, "Successfully updated");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".container.mx-auto.my-5.break-words")));
+    }
+
+    @Test
+    public void changePasswordFailed(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        userProfilePage.goToChangePassword();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body > div:nth-child(1) > div:nth-child(1) > div:nth-child(5) > div:nth-child(1)")));
+
+        userProfilePage.insertChangePasswordData("wrongpassword","manager","manager");
+
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        userProfilePage.assertMessage(msg, "Wrong Password");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".container.mx-auto.my-5.break-words")));
     }
 
@@ -52,6 +75,26 @@ public class UpdateProfileInfo {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body > div:nth-child(1) > div:nth-child(1) > div:nth-child(5) > div:nth-child(1)")));
 
         userProfilePage.insertUpdateProfileData("manager","firstName","lastName","Yogyakarta","081234567489");
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        userProfilePage.assertMessage(msg, "Successfully updated");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".container.mx-auto.my-5.break-words")));
+    }
+
+    @Test
+    public void updateProfileFailed(){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        userProfilePage.goToUpdateProfile();
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("body > div:nth-child(1) > div:nth-child(1) > div:nth-child(5) > div:nth-child(1)")));
+
+        userProfilePage.insertUpdateProfileData("wrongpassword","firstName","lastName","Yogyakarta","081234567489");
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+        userProfilePage.assertMessage(msg, "Failed to update");
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".container.mx-auto.my-5.break-words")));
     }
 

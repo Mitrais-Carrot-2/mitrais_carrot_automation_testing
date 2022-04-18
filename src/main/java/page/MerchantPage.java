@@ -404,7 +404,7 @@ public class MerchantPage {
     }
 
     public Integer getRows(){
-        List<WebElement> rows = driver.findElements(By.xpath("//table/tbody/tr"));
+        List<WebElement> rows = this.driver.findElements(By.xpath("//table/tbody/tr"));
         Integer rowSize = rows.size();
         return rowSize;
     }

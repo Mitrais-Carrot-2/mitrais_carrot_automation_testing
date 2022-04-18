@@ -61,18 +61,18 @@ public class Admin {
                 "04031997");
     }
 
-    // After each test
-//    @After
-//    public void clearCache() {
-//        // Delete cookies to logout user
-//        driver.manage().deleteAllCookies();
-//    }
+//     After each test
+    @After
+    public void clearCache() {
+        // Delete cookies to logout user
+        driver.manage().deleteAllCookies();
+    }
 
-    // After all tests
-//    @AfterClass
-//    public static void closeBrowser() {
-//        // Terminate the WebDriver
-//        driver.quit();
-//    }
+//     After all tests
+    @AfterClass
+    public static void closeBrowser() {
+        // Terminate the WebDriver
+        driver.quit();
+    }
 
 }
