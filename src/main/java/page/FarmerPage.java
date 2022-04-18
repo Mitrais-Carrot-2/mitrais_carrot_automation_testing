@@ -25,42 +25,42 @@ public class FarmerPage {
 
     // get Barn Name by Index
     By barnName_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[2]");
+        return By.xpath("//div["+(index+1)+"]/div/div[2]/div");
     }
 
     // Get Barn Start Periode by Index
     By barnStartPeriode_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[3]");
+        return By.xpath("//div["+(index+1)+"]/div/div[3]/div");
     }
 
     // Get Barn End Periode by Index
     By barnEndPeriode_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[4]");
+        return By.xpath("//div["+(index+1)+"]/div/div[4]/div");
     }
 
     // Get Barn Carrot Amount by Index
     By barnCarrotAmount_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[5]");
+        return By.xpath("//div["+(index+1)+"]/div/div[5]/div");
     }
 
     // Get Barn Distributed Carrot by Index
     By barnDistributedCarrot_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[6]");
+        return By.xpath("//div["+(index+1)+"]/div/div[6]/div");
     }
 
     // Get Barn Status by Index
     By barnStatus_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[7]");
+        return By.xpath("//div["+(index+1)+"]/div/div[7]/div");
     }
 
     // Get Manage Button by Index
     public By manage_button_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[8]/button[1]");
+        return By.xpath("//div["+index+"]/div[8]/button[1]");
     }
 
     // Get History Button by Index
     public By history_button_loc(int index) {
-        return By.xpath("//table[@id='list-of-barns']/tbody[" + index + "]/tr/td[8]/button[2]");
+        return By.xpath("//div["+index+"]/div[8]/button[2]");
     }
 
     // Get Create Barn Button
@@ -77,7 +77,7 @@ public class FarmerPage {
     }
 
     public void assertInDistributionPageActive() {
-        driver.findElement(By.id("farmer-dashboard"));
+        driver.findElement(By.xpath("//h4[normalize-space()='Distribution Details:']"));
     }
 
     public void assertInDistributionPageInactive() {
@@ -277,7 +277,7 @@ public class FarmerPage {
     }
 
     public String transferToManager(String carrotAmount, String message) throws InterruptedException {
-        this.driver.findElement(By.cssSelector(".btn.btn-info.text-white.py-2.px-4.rounded")).click();
+        this.driver.findElement(By.xpath("//div[2]/button")).click();
         this.driver.findElement(By.cssSelector(".css-6j8wv5-Input")).click();
         this.driver.findElement(By.id("react-select-2-option-0")).click();
         String receiver = this.driver.findElement(By.name("manager-name")).getAttribute("value");
@@ -286,7 +286,7 @@ public class FarmerPage {
         this.driver.findElement(By.name("message")).sendKeys(message);
         this.driver.findElement(By.cssSelector(".bg-green-600")).click();
         waitForAlert();
-        assertEquals(driver.switchTo().alert().getText(), "Successfully distributed 10 carrot to " + receiver);
+        assertEquals(driver.switchTo().alert().getText(), "Successfully distributed "+ carrotAmount +" carrot to " + receiver);
         driver.switchTo().alert().accept();
         this.driver.findElement(By.xpath("//button[normalize-space()='Close']")).click();
         return receiver;
@@ -312,7 +312,7 @@ public class FarmerPage {
         int activeBarn = 0;
         for (int i = 1; i <= lastBarn; i++) {
             String barnStatus = this.getBarnStatus(i);
-            if (barnStatus.equals("Yes")) {
+            if (barnStatus.equals("Active")) {
                 activeBarn = i;
                 return activeBarn;
             }
