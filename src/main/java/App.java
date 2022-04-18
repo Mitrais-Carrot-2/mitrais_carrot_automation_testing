@@ -24,12 +24,13 @@ public class App {
     // Run the test
     JUnitCore junit = new JUnitCore();
     result = junit.run(
-        Login.class,
-        Manager.class,
-        Farmer.class,
-        Merchant.class,
-        UpdateProfileInfo.class,
-        Admin.class);
+//        Login.class,
+//        Manager.class,
+//        Farmer.class,
+//        Merchant.class,
+        UpdateProfileInfo.class
+//        Admin.class
+    );
 
   }
 
