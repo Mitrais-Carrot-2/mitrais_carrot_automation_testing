@@ -3,6 +3,8 @@ package page;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class ItemDetailsPage {
@@ -77,21 +79,30 @@ public class ItemDetailsPage {
     }
 
     public void buyItem(long carrotAmount, WebDriverWait wait) {
-        if (!isItemAvailable() && !isCarrotEnough(carrotAmount)) {
+        if (isItemAvailable() && isCarrotEnough(carrotAmount)) {
             checkButtonStatus(true);
 
             long prevQty = getItemQuantity();
 
-            wait.until(driver -> driver.findElement(btn_buy));
             this.driver.findElement(btn_buy).click();
             wait.until(driver -> driver.findElement(btn_buy_confirm));
 
-//            this.driver.findElement(btn_buy_confirm).click();
-//            wait.until(driver -> driver.findElement(buy_requested_modal));
+            this.driver.findElement(btn_buy_confirm).click();
+            wait.until(driver -> driver.findElement(buy_requested_modal));
 
-//            long newQty = getItemQuantity();
-//
-//            Assert.assertEquals((prevQty-1), newQty);
+            Actions actions = new Actions(driver);
+            int modalX = driver.findElement(buy_requested_modal).getLocation().getX();
+            int modalY = driver.findElement(buy_requested_modal).getLocation().getY();
+            System.out.println("X = " + modalX + " Y = " + modalY);
+
+            actions.moveByOffset(modalX, modalY).click().build().perform();
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(buy_requested_modal));
+
+            long newQty = getItemQuantity();
+
+            System.out.println("BUYING ITEM");
+
+            Assert.assertEquals((prevQty-1), newQty);
         }
 
         if (!isItemAvailable()) {
