@@ -129,7 +129,7 @@ public class ManagerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("error-label")));
 
-        String expectedMessage = "Please fill in all the fields!";
+        String expectedMessage = "Please fill in a valid data!";
         Assert.assertEquals("Message not match!", expectedMessage, this.driver.findElement(By.id("error-label")).getText());
     }
 
@@ -144,7 +144,7 @@ public class ManagerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("error-label")));
 
-        String expectedMessage = "Please fill in all the fields!";
+        String expectedMessage = "Please fill in a valid data!";
         Assert.assertEquals("Message not match!", expectedMessage, this.driver.findElement(By.id("error-label")).getText());
     }
 
@@ -191,7 +191,7 @@ public class ManagerPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("error-label")));
 
-        String expectedMessage = "Please fill in all the fields!";
+        String expectedMessage = "Please fill in a valid data!";
         Assert.assertEquals("Message not match!", expectedMessage, this.driver.findElement(By.id("error-label")).getText());
     }
 
