@@ -71,7 +71,7 @@ public class Merchant {
 //    }
 //
     //Success create bazaar
-    @Test
+//    @Test
     public void createNewBazaar(){
 
 
@@ -172,6 +172,11 @@ public class Merchant {
         String itemDesc = "Description " + getRandomInts(100,1000);
 
         merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
+        wait.until(ExpectedConditions.alertIsPresent());
+        String msg = driver.switchTo().alert().getText();
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//h2[normalize-space()='Bazaar Item Dashboard']")));
 
         merchantPage.assertCreateItem(itemName);
@@ -195,7 +200,7 @@ public class Merchant {
         merchantPage.createBazaarItem(itemName,itemPrice,itemQty,itemDesc);
         wait.until(ExpectedConditions.alertIsPresent());
         String errMsg = driver.switchTo().alert().getText();
-        String expectedError = "Failed";
+        String expectedError = "Failed: Missing Data!";
         Alert alert = driver.switchTo().alert();
         alert.accept();
 
@@ -249,7 +254,7 @@ public class Merchant {
         String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        merchantPage.assertAlternateError(msg, "Update Error!");
+        merchantPage.assertAlternateError(msg, "Failed: Missing Data!");
     }
 
     //         //////////////////        //
@@ -277,7 +282,7 @@ public class Merchant {
     //         //////////////////////        //
     //          APPROVE/DENY REQUEST         //
     //         //////////////////////        //
-    @Test
+//    @Test
     public void approveItem(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         //load exchange
@@ -292,7 +297,7 @@ public class Merchant {
         merchantPage.assertMessage(msg, "Success!");
     }
 
-    @Test
+//    @Test
     public void denyItem(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         //load exchange
@@ -323,7 +328,7 @@ public class Merchant {
     //         //////////////////        //
     //            CREATE GROUP           //
     //         //////////////////        //
-    @Test
+//    @Test
     public void createGroup(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         merchantPage.goToStaffGroup();
@@ -356,10 +361,10 @@ public class Merchant {
         String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        merchantPage.assertMessage(msg, "Failed: Missing Data!");
+        merchantPage.assertMessage(msg, "Error: Missing Data!");
     }
 
-    @Test
+//    @Test
     public void createGroupFailDuplicateData(){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         merchantPage.goToStaffGroup();
@@ -396,7 +401,7 @@ public class Merchant {
         String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        merchantPage.assertMessage(msg, "Updated!");
+        merchantPage.assertMessage(msg, "Group Details Updated!");
     }
 
     @Test
@@ -413,7 +418,7 @@ public class Merchant {
         String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        merchantPage.assertMessage(msg, "Update Error: Missing Data!");
+        merchantPage.assertMessage(msg, "Failed: Missing Data!");
     }
 
     @Test
@@ -430,7 +435,7 @@ public class Merchant {
         String msg = driver.switchTo().alert().getText();
         Alert alert = driver.switchTo().alert();
         alert.accept();
-        merchantPage.assertMessage(msg, "Update Error: Duplicate Data!");
+        merchantPage.assertMessage(msg, "Failed: Duplicate data!");
     }
 
     //After each test

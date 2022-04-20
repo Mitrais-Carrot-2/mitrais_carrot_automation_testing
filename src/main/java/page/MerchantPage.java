@@ -356,7 +356,7 @@ public class MerchantPage {
     public void updateStaffGroup(String name, String note, String carrot){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         Integer rowSize = getRows();
-        Integer selectedIndex = getRandomInts(3,rowSize);
+        Integer selectedIndex = getRandomInts(1,rowSize);
 
         By groupNameLoc = By.id("group-name-input");
         By groupNoteLoc = By.id("group-notes-input");
