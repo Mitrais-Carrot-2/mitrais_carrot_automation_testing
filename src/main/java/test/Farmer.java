@@ -34,7 +34,7 @@ public class Farmer {
         dashboardPage = new DashboardPage(driver);
         farmerPage = new FarmerPage(driver);
 
-        loginPage.login("Naufal", "string"); // Change to username and password for farmer
+        loginPage.login("farmer", "farmer"); // Change to username and password for farmer
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("btn-farmer")));
         dashboardPage.goToFarmerPage();

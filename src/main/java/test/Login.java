@@ -43,7 +43,7 @@ public class Login {
     @Test
     public void standard_login() {
         // Login with valid credentials
-        loginPage.login("Naufal", "string");
+        loginPage.login("farmer", "farmer");
         // loginPage.login ("manager","manager");
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
         wait.until(driver -> driver.findElement(By.id("dashboard-title")));
